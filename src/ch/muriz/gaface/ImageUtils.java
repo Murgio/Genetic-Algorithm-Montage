@@ -15,30 +15,41 @@ public class ImageUtils {
     BufferedImage mask;
     public List<BufferedImage> ALPHA_SOURCE_SIZES;
 
-    ImageUtils() throws IOException {
-        source = ImageIO.read(new File(Settings.MATCH_FILE));
-        alphaSource = ImageIO.read(new File(Settings.INSTANCE_FILE));
-        mask = ImageIO.read(new File(Settings.IMPORTANT_MASK_FILE));
+    ImageUtils() {
+        try {
+            source = ImageIO.read(new File(Settings.MATCH_FILE));
+            alphaSource = ImageIO.read(new File(Settings.INSTANCE_FILE));
+            mask = ImageIO.read(new File(Settings.IMPORTANT_MASK_FILE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*
      * Create the alphaSouce image which the individuals will be created from
      * and the source image which individuals will be matched against
      */
-    public void init() throws IOException {
-        if(source.getType() != BufferedImage.TYPE_INT_RGB) {
-            BufferedImage convertedImg = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
-            convertedImg.getGraphics().drawImage(source, 0, 0, null);
-            convertedImg.getGraphics().dispose();
-            source = convertedImg;
-        } else System.out.println("Image source is already type RGB");
+    public BufferedImage init(String picture) throws IOException {
+        if(picture.equals("source") || picture.equals("Source")) {
+            if (source.getType() != BufferedImage.TYPE_INT_RGB) {
+                BufferedImage convertedImg = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
+                convertedImg.getGraphics().drawImage(source, 0, 0, null);
+                convertedImg.getGraphics().dispose();
+                source = convertedImg;
+                return source;
+            } else System.out.println("Image source is already type RGB");
+        }
+        if(picture.equals("alpha") || picture.equals("Alpha")) {
+            if (alphaSource.getType() != BufferedImage.TYPE_INT_ARGB) {
+                BufferedImage convertedImg = new BufferedImage(alphaSource.getWidth(), alphaSource.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                convertedImg.getGraphics().drawImage(alphaSource, 0, 0, null);
+                convertedImg.getGraphics().dispose();
+                alphaSource = convertedImg;
+                return alphaSource;
+            } else System.out.println("Image alphaSource is already type RGBA");
+        } else System.out.println("Init failed. Only acceptable Source or Alpha");
 
-        if(alphaSource.getType() != BufferedImage.TYPE_INT_ARGB) {
-            BufferedImage convertedImg = new BufferedImage(alphaSource.getWidth(), alphaSource.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            convertedImg.getGraphics().drawImage(alphaSource, 0, 0, null);
-            convertedImg.getGraphics().dispose();
-            alphaSource = convertedImg;
-        } else System.out.println("Image alphaSource is already type RGBA");
+        return null;
     }
 
     /*

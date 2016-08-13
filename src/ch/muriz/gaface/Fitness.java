@@ -15,15 +15,25 @@ import javax.imageio.ImageIO;
 public class Fitness {
 
     /*
+     * Determines the fitness of the individual by creating and matching
+     * the individual's phenotype with the source phenotype (a predefined image)
+     */
+    public double calculateFitness() {
+        return 0.0;
+    }
+
+    /*
      * Calculates the difference between two images
      * Uses root mean squared analysis
      * If specified, mask is used for the histogram
+     * TODO Take the parameter mask and calculate the histogram with only the mask
      */
-    public double simpleImageSimilarity(BufferedImage image, BufferedImage match, BufferedImage mask) {
+    private double simpleImageSimilarity(BufferedImage image, BufferedImage match, BufferedImage mask) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
         // Create histogram with a mask if image is RGBA
+        //BufferedImage maskWithAlpha = ImageIO.read(new File("mask.png"));
         int[] histogram = Utils.imageHistogram(difference);
         long sumSquaredValues = 0;
         long square = 0;
@@ -36,7 +46,7 @@ public class Fitness {
     /*
      * If no mask is available
      */
-    public double simpleImageSimilarity(BufferedImage image, BufferedImage match) {
+    private double simpleImageSimilarity(BufferedImage image, BufferedImage match) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
@@ -56,7 +66,7 @@ public class Fitness {
      * importantMask = Single Layer Mask, only the alpha channel.
      * importantMaskRGB = mask.png drew over top of a white, blank image
      */
-    public double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
+    private double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
         double similarity = simpleImageSimilarity(image, match);
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage importantMask = imageUtils.createImportantMask();
@@ -66,10 +76,12 @@ public class Fitness {
         Graphics2D maskedGraphics = maskedImage.createGraphics();
         maskedGraphics.setBackground(Color.WHITE);
         maskedGraphics.clearRect(0, 0, maskedImage.getWidth(), maskedImage.getHeight());
+        maskedGraphics.dispose();
         BufferedImage importantMaskRGB = maskedImage;
         maskedImage = Utils.applyGrayscaleMaskToAlpha(image, importantMask);
         Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
         importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
+        importantMaskRGBGraphics.dispose();
         similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * Settings.IMPORTANT_AREAS_SCALE;
 
         return similarity;

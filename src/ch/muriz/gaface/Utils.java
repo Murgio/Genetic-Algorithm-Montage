@@ -1,16 +1,10 @@
 package ch.muriz.gaface;
 
+import java.awt.*;
 import java.util.List;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 public final class Utils {
 
@@ -147,6 +141,40 @@ public final class Utils {
         }
         image.setRGB(0, 0, width, height, imagePixels, 0, width);
         return image;
+    }
+
+    /*
+     * Rotates an image
+     */
+    public static BufferedImage rotateImage(BufferedImage img, double angle) {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle))), cos = Math
+                .abs(Math.cos(Math.toRadians(angle)));
+        int w = img.getWidth(null), h = img.getHeight(null);
+        int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math
+                .floor(h * cos + w * sin);
+        BufferedImage bimg = new BufferedImage(neww, newh,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bimg.createGraphics();
+        g.translate((neww - w) / 2, (newh - h) / 2);
+        g.rotate(Math.toRadians(angle), w / 2, h / 2);
+        g.drawRenderedImage(img, null);
+        g.dispose();
+        return bimg;
+    }
+
+    public static BufferedImage makeImageTranslucent(BufferedImage source, float alpha) {
+        BufferedImage target = new BufferedImage(source.getWidth(),
+                source.getHeight(), java.awt.Transparency.TRANSLUCENT);
+        // Get the images graphics
+        Graphics2D g = target.createGraphics();
+        // Set the Graphics composite to Alpha
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        // Draw the image into the prepared reciver image
+        g.drawImage(source, null, 0, 0);
+        // let go of all system resources in this Graphics
+        g.dispose();
+        // Return the image
+        return target;
     }
 }
 
