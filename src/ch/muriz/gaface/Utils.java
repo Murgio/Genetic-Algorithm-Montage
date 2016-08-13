@@ -1,6 +1,9 @@
 package ch.muriz.gaface;
 
 import java.awt.*;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
