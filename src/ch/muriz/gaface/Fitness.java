@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -14,12 +15,18 @@ import javax.imageio.ImageIO;
 
 public class Fitness {
 
+    Phenotype phenotypeObject = new Phenotype();
+
     /*
      * Determines the fitness of the individual by creating and matching
      * the individual's phenotype with the source phenotype (a predefined image)
      */
-    public double calculateFitness() {
-        return 0.0;
+    public double calculateFitness(List<Integer> DNA) throws IOException{
+        Phenotype phenotypeObject = new Phenotype();
+        ImageUtils imageUtils = new ImageUtils();
+        BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
+        double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
+        //return ((similarity - ));
     }
 
     /*
@@ -85,6 +92,18 @@ public class Fitness {
         similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * Settings.IMPORTANT_AREAS_SCALE;
 
         return similarity;
+    }
+
+    private double similarityMatch(String caseString) throws IOException{
+        ImageUtils imageUtils = new ImageUtils();
+        if(caseString.equals("min")) {
+            return calculateImageSimilarity(imageUtils.createNegativeImage(), imageUtils.init("source"));
+        }
+        if(caseString.equals("max")) {
+            return calculateImageSimilarity(imageUtils.createNegativeImage(), imageUtils.init("source"));
+        }
+        System.out.println("Failed to calculate similarity. Please type min or max");
+        return 0.0;
     }
 
 }
