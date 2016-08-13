@@ -26,8 +26,7 @@ public class Fitness {
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
         double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
-        //return ((similarity - ));
-        return 0.0;
+        return ((similarity - similarityMatch("min")) / (similarityMatch("max") - similarityMatch("min")))*100;
     }
 
     /*
@@ -98,6 +97,7 @@ public class Fitness {
     private double similarityMatch(String caseString) throws IOException{
         ImageUtils imageUtils = new ImageUtils();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
+        blurFilter.setHRadius(4); blurFilter.setRadius(4); blurFilter.setIterations(1);
         BufferedImage source = imageUtils.init("source");
         if(caseString.equals("min")) {
             return calculateImageSimilarity(imageUtils.createNegativeImage(), source);

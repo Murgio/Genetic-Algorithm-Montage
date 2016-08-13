@@ -30,12 +30,5 @@ public class FaceGen {
         BufferedImage pheno = phenotype.createPhenotype(DNA);
         ImageIO.write(pheno, "png", new File("pheno.png"));*/
 
-        BoxBlurFilter blurFilter = new BoxBlurFilter();
-        BufferedImage source = ImageIO.read(new File("match.png"));
-        BufferedImage target = new BufferedImage(source.getWidth(),
-                source.getHeight(), java.awt.Transparency.TRANSLUCENT);
-        BufferedImage blurImage = blurFilter.filter(source, null);
-        ImageIO.write(blurImage, "png", new File("bluredImage.png"));
-
     }
 }
