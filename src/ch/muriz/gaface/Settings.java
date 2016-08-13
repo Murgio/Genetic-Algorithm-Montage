@@ -19,7 +19,7 @@ public class Settings {
     // Sections of image more important than others
     public static final String IMPORTANT_MASK_FILE = "mask.png";
     // Location to store status information
-    public static final String STATUS_DIR = "";
+    public static final String STATUS_DIR = "/Users/Muriz/Desktop/face_test";
     // File which holds the last generation's DNA
     public static final String SOURCE_GENERATION_FILE = null;
 

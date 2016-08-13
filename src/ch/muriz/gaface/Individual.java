@@ -14,9 +14,8 @@ public class Individual {
         geneLength = Settings.INDIVIDUAL_GENE_LENGTH;
         // number of images
         DNALength = geneLength * Settings.INDIVIDUAL_GENES;
-        if(mDNA == null) {
-            mDNA = createDNA();
-        }
+        mDNA = createDNA();
+
     }
 
     public List<Integer> createDNA() {
