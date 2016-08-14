@@ -42,13 +42,13 @@ public class FaceGen {
             } else {
                 System.out.println("Source generation file failed. Creating population from scratch...");
                 Population population = new Population();
-                population.createPopulation();
+                population.checkPopulation();
             }
         } else {
             System.out.println("Creating population from scratch...");
-            //  ( ͡° ͜ʖ ͡°) Woohoo new Population!
+            //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
             Population population = new Population();
-            population.createPopulation();
+            population.checkPopulation();
         }
     }
 
