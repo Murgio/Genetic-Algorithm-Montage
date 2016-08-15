@@ -57,7 +57,7 @@ public class FaceGen {
         for(int i = 0; i < generations; i++) {
             long startTime = System.currentTimeMillis();
             if((i % Settings.STATUS_INTERVAL == 0) || i == (generations-1)) {
-
+                //Algorithm.savePopulation();
             } else {
                 population = Algorithm.evolvePopulation(population);
             }

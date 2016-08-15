@@ -1,5 +1,8 @@
 package ch.muriz.gaface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Population {
 
     Individual[] individuals;
@@ -33,8 +36,26 @@ public class Population {
         individuals[index] = indiv;
     }
 
-    public Individual getIndividual(int index) {
-        return individuals[index];
+    public List<List<Integer>> getDNAList() {
+        List<List<Integer>> DNAList = new ArrayList<>();
+        if(individuals.length != 0) {
+            for(Individual indiv : individuals) {
+                DNAList.add(indiv.getDNA());
+            }
+        } else {
+            System.out.println("There are no individuals");
+        }
+        return DNAList;
+    }
+
+    public List<List<Integer>> getSpecificDNAList(int index) {
+        List<List<Integer>> specificDNAList = new ArrayList<>();
+        if(individuals.length != 0) {
+            specificDNAList.add(individuals[index].getDNA());
+        } else {
+            System.out.println("The specific individual doesn't exist");
+        }
+        return specificDNAList;
     }
 
     // Get population size
