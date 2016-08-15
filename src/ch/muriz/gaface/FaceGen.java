@@ -51,8 +51,6 @@ public class FaceGen {
             population.checkPopulation();
         }*/
 
-
-
     }
 
     private static void purgeDirectory(File dir) {

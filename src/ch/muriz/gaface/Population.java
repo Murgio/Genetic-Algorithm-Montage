@@ -84,4 +84,14 @@ public class Population {
         result.add(secondResult);
         return result;
     }
+
+    /*
+     * Randomly mutates a piece of DNA
+     */
+    private List<Integer> mutate(List<Integer> DNA) {
+        int chosenBase = rand.nextInt(DNA.size());
+        int chosenBaseType = Settings.INDIVIDUAL_BASE_TYPES[rand.nextInt(Settings.INDIVIDUAL_BASE_TYPES.length)];
+        DNA.set(chosenBase, chosenBaseType);
+        return DNA;
+    }
 }
