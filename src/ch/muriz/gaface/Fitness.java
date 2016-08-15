@@ -15,14 +15,14 @@ import javax.imageio.ImageIO;
 
 public class Fitness {
 
-    Phenotype phenotypeObject = new Phenotype();
+    Phenotype phenotypeObject;
 
     /*
      * Determines the fitness of the individual by creating and matching
      * the individual's phenotype with the source phenotype (a predefined image)
      */
     public double calculateFitness(List<Integer> DNA) throws IOException{
-        Phenotype phenotypeObject = new Phenotype();
+        phenotypeObject = new Phenotype();
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
         double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
@@ -108,6 +108,5 @@ public class Fitness {
         System.out.println("Failed to calculate similarity. Please type min or max");
         return 0.0;
     }
-
 }
 

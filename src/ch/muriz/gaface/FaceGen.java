@@ -23,7 +23,7 @@ public class FaceGen {
         File dir = new File(Settings.STATUS_DIR);
         purgeDirectory(dir);
 
-        // Create the intitial population
+        /*// Create the intitial population
         if(Settings.SOURCE_GENERATION_FILE != null) {
             System.out.println("Loading source generation file...");
             Scanner scanner = new Scanner(new File(Settings.SOURCE_GENERATION_FILE));
@@ -41,13 +41,15 @@ public class FaceGen {
 
             } else {
                 System.out.println("Source generation file failed. Creating population from scratch...");
-                Population population = new Population();
+                Population population = new Population(true);
             }
         } else {
             System.out.println("Creating population from scratch...");
-            //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
-            Population population = new Population();
-        }
+            Population population = new Population(true);
+        }*/
+
+        //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
+        Population population = new Population(true);
 
         // Create new populations
         // Every so many generations or the last generation, request a status update
@@ -57,7 +59,7 @@ public class FaceGen {
             if((i % Settings.STATUS_INTERVAL == 0) || i == (generations-1)) {
 
             } else {
-
+                population = Algorithm.evolvePopulation(population);
             }
             long endTime = System.currentTimeMillis();
             System.out.println("Generation " + i + ": " + (endTime-startTime) + " seconds");
