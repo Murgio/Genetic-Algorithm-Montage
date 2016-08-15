@@ -42,10 +42,10 @@ public class Algorithm {
             }
         }
         individualFitness = Utils.choppedList(mergedList, 2);
-        Collections.sort((individualFitness), new Comparator<List<Double>>() {
-            public int compare(List<Double> list1, List<Double> list2) {
+        Collections.sort(individualFitness, new Comparator<List<Number>>() {
+            public int compare(List<Number> list1, List<Number> list2) {
                 //Simple comparison here
-                return list1.get(0).compareTo(list2.get(0));
+                return Double.compare((double)list1.get(0), (double)list2.get(0));
             }
         });
         Collections.reverse(mergedList);
@@ -109,10 +109,10 @@ public class Algorithm {
             }
         }
         // Return two most fit individuals from tournament
-        Collections.sort(tournament, new Comparator<List<Double>>() {
-            public int compare(List<Double> list1, List<Double> list2) {
+        Collections.sort(tournament, new Comparator<List<Number>>() {
+            public int compare(List<Number> list1, List<Number> list2) {
                 //Simple comparison here
-                return list1.get(0).compareTo(list2.get(0));
+                return Double.compare((double)list1.get(0), (double)list2.get(0));
             }
         });
         Collections.reverse(tournament);
