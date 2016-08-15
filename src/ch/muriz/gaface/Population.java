@@ -35,7 +35,7 @@ public class Population {
      * Based on a list of (fitness, individualNumber) tuples
      * Uses tournament selection
      */
-    public List<Float> determineMatingPairTournament(List<ArrayList<Float>> individualFitness) {
+    private List<Float> determineMatingPairTournament(List<ArrayList<Float>> individualFitness) {
         int tournamentSize = (int)Math.ceil(individualFitness.size() * Settings.TOURNAMENT_FRACTION);
         if(tournamentSize == 1) tournamentSize = 2;
 
@@ -66,12 +66,22 @@ public class Population {
     /*
      * Crosses over two pieces of mating DNA
      */
-    private List<Integer> crossOver(List<Integer> matinDNA) {
-        int pivot = 0;
-        int[] pivotArray = Utils.range(0, matinDNA.get(0));
-        int randomPivot = new Random().nextInt(pivotArray.length);
-        pivot = pivotArray[randomPivot];
-        
-        return null;
+    private List<ArrayList<Integer>> crossover(List<ArrayList<Integer>> matingDNA) {
+        int pivot = rand.nextInt(matingDNA.get(0).size());
+        List<ArrayList<Integer>> result = new ArrayList<>();
+        List<Integer> firstMatingDNA = matingDNA.get(0);
+        List<Integer> secondMatingDNA = matingDNA.get(1);
+        List<Integer> firstPart = firstMatingDNA.subList(0, firstMatingDNA.size()-pivot);
+        List<Integer> secondPart = secondMatingDNA.subList(secondMatingDNA.size()-pivot, secondMatingDNA.size()+1);
+        ArrayList<Integer> firstResult = new ArrayList<Integer>(firstPart);
+        firstResult.addAll(secondPart);
+        result.add(firstResult);
+
+        List<Integer> firstPartList2 = secondMatingDNA.subList(0, secondMatingDNA.size()-pivot);
+        List<Integer> secondPartList2 = firstMatingDNA.subList(firstMatingDNA.size()-pivot, firstMatingDNA.size()+1);
+        ArrayList<Integer> secondResult = new ArrayList<Integer>(firstPartList2);
+        secondResult.addAll(secondPartList2);
+        result.add(secondResult);
+        return result;
     }
 }
