@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class FaceGen {
 
     public static void main(String[] args) throws FileNotFoundException{
-        //Clear out the status directory
+        /*//Clear out the status directory
         File dir = new File(Settings.STATUS_DIR);
         purgeDirectory(dir);
 
@@ -49,7 +49,10 @@ public class FaceGen {
             //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
             Population population = new Population();
             population.checkPopulation();
-        }
+        }*/
+
+
+
     }
 
     private static void purgeDirectory(File dir) {
