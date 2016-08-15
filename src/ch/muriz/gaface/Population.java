@@ -1,32 +1,50 @@
 package ch.muriz.gaface;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Comparator;
+import java.util.*;
 
 public class Population {
     private int size = Settings.POPULATION_SIZE;
     private float crossoverRate = Settings.POPULATION_CROSSOVER_RATE;
     private float mutationRate = Settings.POPULATION_MUTATION_RATE;
     Random rand = new Random();
+    Individual[] individuals;
 
-    public void checkPopulation() {
+    public Population(Population oldPopulation, boolean statusUpdate, int populationNumber) {
+        individuals = new Individual[size];
+        checkPopulation(oldPopulation);
+    }
+
+    private void checkPopulation(Population oldPopulation) {
+        if(oldPopulation == null) {
+            // Create new random population
+            populationFromScratch();
+        } else {
+            evolvePopulation();
+        }
     }
 
     /*
      * Creates new random population
      */
     private void populationFromScratch() {
+        for(int i = 0; i < size; i++) {
+            Individual newIndividual = new Individual(null);
+            saveIndividual(i, newIndividual);
+        }
+    }
 
+    /*
+     * Save individual
+     */
+    private void saveIndividual(int index, Individual indiv) {
+        individuals[index] = indiv;
     }
 
 
     /*
-     * Creates a population based on an old DNA list or another population instance
+     * Evolves a population
      */
-    private void createPopulation() {
+    private void evolvePopulation() {
 
     }
 
@@ -35,7 +53,7 @@ public class Population {
      * Based on a list of (fitness, individualNumber) tuples
      * Uses tournament selection
      */
-    private List<Float> determineMatingPairTournament(List<ArrayList<Float>> individualFitness) {
+    private List<Float> tournamentSelection(List<ArrayList<Float>> individualFitness) {
         int tournamentSize = (int)Math.ceil(individualFitness.size() * Settings.TOURNAMENT_FRACTION);
         if(tournamentSize == 1) tournamentSize = 2;
 

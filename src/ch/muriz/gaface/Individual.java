@@ -9,13 +9,16 @@ public class Individual {
     private int DNALength;
     private List<Integer> mDNA;
 
-    Individual() {
+    Individual(List<Integer> DNA) {
         baseTypes = Settings.INDIVIDUAL_BASE_TYPES;
         geneLength = Settings.INDIVIDUAL_GENE_LENGTH;
         // number of images
         DNALength = geneLength * Settings.INDIVIDUAL_GENES;
-        mDNA = createDNA();
-
+        if(DNA == null) {
+            mDNA = createDNA();
+        } else {
+            mDNA = DNA;
+        }
     }
 
     public List<Integer> createDNA() {

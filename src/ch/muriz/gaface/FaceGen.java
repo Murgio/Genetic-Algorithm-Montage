@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class FaceGen {
 
     public static void main(String[] args) throws FileNotFoundException{
-        /*//Clear out the status directory
+        //Clear out the status directory
         File dir = new File(Settings.STATUS_DIR);
         purgeDirectory(dir);
 
@@ -42,14 +42,26 @@ public class FaceGen {
             } else {
                 System.out.println("Source generation file failed. Creating population from scratch...");
                 Population population = new Population();
-                population.checkPopulation();
             }
         } else {
             System.out.println("Creating population from scratch...");
             //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
             Population population = new Population();
-            population.checkPopulation();
-        }*/
+        }
+
+        // Create new populations
+        // Every so many generations or the last generation, request a status update
+        int generations = Settings.GENERATIONS;
+        for(int i = 0; i < generations; i++) {
+            long startTime = System.currentTimeMillis();
+            if((i % Settings.STATUS_INTERVAL == 0) || i == (generations-1)) {
+
+            } else {
+
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println("Generation " + i + ": " + (endTime-startTime) + " seconds");
+        }
 
     }
 
