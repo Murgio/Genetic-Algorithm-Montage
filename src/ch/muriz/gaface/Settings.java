@@ -25,7 +25,7 @@ public class Settings {
 
     // Variables
     // Number new of populations generated
-    public static final int GENERATIONS = 10000000;
+    public static final int GENERATIONS = 3;
     // Every so many generations, write/print a status update
     public static final int STATUS_INTERVAL = 10;
     // Maximum number of worker processes to use; if None, will use cpu_count()
