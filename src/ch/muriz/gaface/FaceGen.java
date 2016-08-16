@@ -21,9 +21,9 @@ public class FaceGen {
     // Location to store status information
     public static final String STATUS_DIR = "/Users/Muriz/Desktop/face_test";
     // Number new of populations generated
-    public static final int GENERATIONS = 10;
+    public static final int GENERATIONS = 100;
     // Every so many generations, write/print a status update
-    public static final int STATUS_INTERVAL = 1;
+    public static final int STATUS_INTERVAL = 10;
 
     public static void main(String[] args) throws FileNotFoundException{
         //Clear out the status directory
@@ -63,6 +63,7 @@ public class FaceGen {
         int generations = GENERATIONS;
         for(int i = 0; i < generations; i++) {
             long startTime = System.currentTimeMillis();
+            //          Update Interval   || Maximum of generations created
             if((i % STATUS_INTERVAL == 0) || i == (generations-1)) {
                 // Save the population and the picture
                 population = Algorithm.evolvePopulation(population, true, i);

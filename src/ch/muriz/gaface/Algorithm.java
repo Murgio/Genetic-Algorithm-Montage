@@ -17,7 +17,7 @@ public class Algorithm {
     public static final float TOURNAMENT_FRACTION = 0.6f;
     static Random rand = new Random();
     static Fitness fitness;
-    static List<Individual> individuals = new ArrayList<Individual>();
+    static Individual individualI;
 
     // Evolve a population
     public static Population evolvePopulation(Population pop, boolean save, int populationNumber) {
@@ -27,11 +27,13 @@ public class Algorithm {
         List<Double> fitnessList = new ArrayList<Double>();
         for(List<Integer> list : DNAList) {
             try {
+                // slow as f*ck
                 fitnessList.add(fitness.calculateFitness(list));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println(fitnessList);
         List<List<Number>> individualFitness = new ArrayList<>();
         List<Integer> index = new ArrayList<Integer>();
         List<Double> fitness = new ArrayList<Double>();
@@ -61,7 +63,7 @@ public class Algorithm {
             try {
                 Fitness newFitness = new Fitness();
                 List<Number> individualIndex = individualFitness.get(0);
-                Individual exampleIndividual = newPopulation.individuals[(int)individualIndex.get(1)];
+                Individual exampleIndividual = newPopulation.individuals.get((int)individualIndex.get(1));
                 double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
                 Phenotype phenotype = new Phenotype();
                 BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
@@ -106,10 +108,10 @@ public class Algorithm {
 
             // Add a new individual based on the newly mutated/crossed over DNA to the population
             for(List<Integer> DNA : matingDNA) {
-                individuals.add(new Individual(DNA));
+                Individual newIndiv = new Individual(DNA);
+                newPopulation.individuals.add(newIndiv);
             }
         }
-        if(newPopulation == null) System.out.println("Population is null");
         return newPopulation;
     }
 

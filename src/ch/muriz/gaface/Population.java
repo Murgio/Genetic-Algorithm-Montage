@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Population {
 
-    Individual[] individuals;
+    static List<Individual> individuals;
 
     public Population(boolean initialise) {
-        individuals = new Individual[Algorithm.POPULATION_SIZE];
+        individuals = new ArrayList<Individual>();
         checkPopulation(initialise);
     }
 
@@ -25,20 +25,20 @@ public class Population {
     private void populationFromScratch() {
         for(int i = 0; i < size(); i++) {
             Individual newIndividual = new Individual(null);
-            saveIndividual(i, newIndividual);
+            saveIndividual(newIndividual);
         }
     }
 
     /*
      * Save individual
      */
-    private void saveIndividual(int index, Individual indiv) {
-        individuals[index] = indiv;
+    private void saveIndividual(Individual indiv) {
+        individuals.add(indiv);
     }
 
     public List<List<Integer>> getDNAList() {
         List<List<Integer>> DNAList = new ArrayList<>();
-        if(individuals.length != 0) {
+        if(individuals.size() != 0) {
             for(Individual indiv : individuals) {
                 DNAList.add(indiv.getDNA());
             }
@@ -50,8 +50,8 @@ public class Population {
 
     public List<List<Integer>> getSpecificDNAList(int index) {
         List<List<Integer>> specificDNAList = new ArrayList<>();
-        if(individuals.length != 0) {
-            specificDNAList.add(individuals[index].getDNA());
+        if(individuals.size() != 0) {
+            specificDNAList.add(individuals.get(index).getDNA());
         } else {
             System.out.println("The specific individual doesn't exist");
         }
@@ -60,6 +60,6 @@ public class Population {
 
     // Get population size
     public int size() {
-        return individuals.length;
+        return Algorithm.POPULATION_SIZE;
     }
 }
