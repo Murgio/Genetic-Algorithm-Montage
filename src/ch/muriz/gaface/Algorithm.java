@@ -1,5 +1,8 @@
 package ch.muriz.gaface;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -14,13 +17,13 @@ public class Algorithm {
     public static final float TOURNAMENT_FRACTION = 0.6f;
     static Random rand = new Random();
     static Fitness fitness;
-    static List<Individual> individuals;
+    static List<Individual> individuals = new ArrayList<Individual>();
 
     // Evolve a population
-    public static Population evolvePopulation(Population pop) {
+    public static Population evolvePopulation(Population pop, boolean save, int populationNumber) {
         fitness = new Fitness();
-        Population newPopulation = new Population(false);
-        List<List<Integer>> DNAList = pop.getDNAList();
+        Population newPopulation = pop;
+        List<List<Integer>> DNAList = newPopulation.getDNAList();
         List<Double> fitnessList = new ArrayList<Double>();
         for(List<Integer> list : DNAList) {
             try {
@@ -51,6 +54,23 @@ public class Algorithm {
             }
         });
         Collections.reverse(mergedList);
+
+        // If requested, give a status update with the most fit individual from the old population
+        // Also save the DNA for all individuals in the last population, and possible best generation
+        if(save) {
+            try {
+                Fitness newFitness = new Fitness();
+                List<Number> individualIndex = individualFitness.get(0);
+                Individual exampleIndividual = newPopulation.individuals[(int)individualIndex.get(1)];
+                double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
+                Phenotype phenotype = new Phenotype();
+                BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
+                ImageIO.write(phenotypeImage, "png", new File(FaceGen.STATUS_DIR + "/" + populationNumber + ".png"));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         for(int i = 0; i < (POPULATION_SIZE/2); i++) {
             List<List<Integer>> matingDNA = new ArrayList<>();
             List<Number> matingPair = tournamentSelection(individualFitness);
@@ -89,6 +109,7 @@ public class Algorithm {
                 individuals.add(new Individual(DNA));
             }
         }
+        if(newPopulation == null) System.out.println("Population is null");
         return newPopulation;
     }
 
@@ -134,13 +155,13 @@ public class Algorithm {
         List<Integer> firstMatingDNA = matingDNA.get(0);
         List<Integer> secondMatingDNA = matingDNA.get(1);
         List<Integer> firstPart = firstMatingDNA.subList(0, firstMatingDNA.size()-pivot);
-        List<Integer> secondPart = secondMatingDNA.subList(secondMatingDNA.size()-pivot, secondMatingDNA.size()+1);
+        List<Integer> secondPart = secondMatingDNA.subList(secondMatingDNA.size()-pivot, secondMatingDNA.size());
         ArrayList<Integer> firstResult = new ArrayList<Integer>(firstPart);
         firstResult.addAll(secondPart);
         result.add(firstResult);
 
         List<Integer> firstPartList2 = secondMatingDNA.subList(0, secondMatingDNA.size()-pivot);
-        List<Integer> secondPartList2 = firstMatingDNA.subList(firstMatingDNA.size()-pivot, firstMatingDNA.size()+1);
+        List<Integer> secondPartList2 = firstMatingDNA.subList(firstMatingDNA.size()-pivot, firstMatingDNA.size());
         ArrayList<Integer> secondResult = new ArrayList<Integer>(firstPartList2);
         secondResult.addAll(secondPartList2);
         result.add(secondResult);
