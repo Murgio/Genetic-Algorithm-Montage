@@ -15,11 +15,22 @@ public class ImageUtils {
     BufferedImage mask;
     public List<BufferedImage> ALPHA_SOURCE_SIZES;
 
+    // File locations
+    // Image the individuals are matched against
+    public static final String MATCH_FILE = "match.png";
+    // Image the individuals are based on
+    public static final String INSTANCE_FILE = "instance.png";
+    // Sections of image more important than others
+    public static final String IMPORTANT_MASK_FILE = "mask.png";
+
+    public static final float INDIVIDUAL_MIN_SCALE = 0.1f; // (0, 1]
+    public static final float INDIVIDUAL_MAX_SCALE = 1.0f; // (0, 1]
+
     ImageUtils() {
         try {
-            source = ImageIO.read(new File(Settings.MATCH_FILE));
-            alphaSource = ImageIO.read(new File(Settings.INSTANCE_FILE));
-            mask = ImageIO.read(new File(Settings.IMPORTANT_MASK_FILE));
+            source = ImageIO.read(new File(MATCH_FILE));
+            alphaSource = ImageIO.read(new File(INSTANCE_FILE));
+            mask = ImageIO.read(new File(IMPORTANT_MASK_FILE));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,10 +68,10 @@ public class ImageUtils {
      */
     public List<BufferedImage> createAllSizes() {
         ALPHA_SOURCE_SIZES = new ArrayList<BufferedImage>();
-        for(int n : Settings.INDIVIDUAL_BASE_TYPES) {
+        for(int n : Individual.INDIVIDUAL_BASE_TYPES) {
             float scale = n/100.0f;
-            scale = (scale * (Settings.INDIVIDUAL_MAX_SCALE - Settings.INDIVIDUAL_MIN_SCALE))
-                    + Settings.INDIVIDUAL_MIN_SCALE;
+            scale = (scale * (INDIVIDUAL_MAX_SCALE - INDIVIDUAL_MIN_SCALE))
+                    + INDIVIDUAL_MIN_SCALE;
             BufferedImage instance = Utils.resize(alphaSource, Math.round((alphaSource.getWidth()) * scale),
                     Math.round((alphaSource.getWidth()) * scale));
             ALPHA_SOURCE_SIZES.add(instance);

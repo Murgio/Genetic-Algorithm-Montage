@@ -8,7 +8,7 @@ public class Population {
     Individual[] individuals;
 
     public Population(boolean initialise) {
-        individuals = new Individual[Settings.POPULATION_SIZE];
+        individuals = new Individual[Algorithm.POPULATION_SIZE];
         checkPopulation(initialise);
     }
 

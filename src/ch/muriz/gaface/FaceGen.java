@@ -18,9 +18,16 @@ import java.util.Scanner;
 
 public class FaceGen {
 
+    // Location to store status information
+    public static final String STATUS_DIR = "/Users/Muriz/Desktop/face_test";
+    // Number new of populations generated
+    public static final int GENERATIONS = 3;
+    // Every so many generations, write/print a status update
+    public static final int STATUS_INTERVAL = 10;
+
     public static void main(String[] args) throws FileNotFoundException{
         //Clear out the status directory
-        File dir = new File(Settings.STATUS_DIR);
+        File dir = new File(STATUS_DIR);
         purgeDirectory(dir);
 
         /*// Create the intitial population
@@ -53,10 +60,10 @@ public class FaceGen {
 
         // Create new populations
         // Every so many generations or the last generation, request a status update
-        int generations = Settings.GENERATIONS;
+        int generations = GENERATIONS;
         for(int i = 0; i < generations; i++) {
             long startTime = System.currentTimeMillis();
-            if((i % Settings.STATUS_INTERVAL == 0) || i == (generations-1)) {
+            if((i % STATUS_INTERVAL == 0) || i == (generations-1)) {
                 //Algorithm.savePopulation();
             } else {
                 population = Algorithm.evolvePopulation(population);

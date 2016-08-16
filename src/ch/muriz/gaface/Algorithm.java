@@ -7,9 +7,11 @@ import java.util.*;
  * Created by Muriz on 15.08.16.
  */
 public class Algorithm {
-    private static int size = Settings.POPULATION_SIZE;
-    private static float crossoverRate = Settings.POPULATION_CROSSOVER_RATE;
-    private static float mutationRate = Settings.POPULATION_MUTATION_RATE;
+    public static final int POPULATION_SIZE = 30; // Number of Individuals
+    public static final float POPULATION_CROSSOVER_RATE = 0.9f; // [0, infinity)
+    public static final float POPULATION_MUTATION_RATE = 0.1f; // [0, infinity)
+    // (0, 1] : Fraction of population in tournament
+    public static final float TOURNAMENT_FRACTION = 0.6f;
     static Random rand = new Random();
     static Fitness fitness;
     static List<Individual> individuals;
@@ -49,7 +51,7 @@ public class Algorithm {
             }
         });
         Collections.reverse(mergedList);
-        for(int i = 0; i < (size/2); i++) {
+        for(int i = 0; i < (POPULATION_SIZE/2); i++) {
             List<List<Integer>> matingDNA = new ArrayList<>();
             List<Number> matingPair = tournamentSelection(individualFitness);
             for(Number individualNumber : matingPair) {
@@ -58,26 +60,26 @@ public class Algorithm {
 
             //Crossover the mating pair's DNA so many times according to crossover rate
             int crossovers = 0;
-            if(crossoverRate > 1.0f) {
-                while(crossoverRate - crossovers > 1) {
+            if(POPULATION_CROSSOVER_RATE > 1.0f) {
+                while(POPULATION_CROSSOVER_RATE - crossovers > 1) {
                     matingDNA = crossover(matingDNA);
                     crossovers++;
                 }
             }
-            if(Math.random() <= crossoverRate - crossovers) {
+            if(Math.random() <= POPULATION_CROSSOVER_RATE - crossovers) {
                 matingDNA = crossover(matingDNA);
             }
 
             // Mutate each mate's DNA so many times accorind to mutation rate
             for(int n = 0; n < 2; n++) {
                 int mutations = 0;
-                if(mutationRate > 1) {
-                    while(mutationRate - mutations > 1) {
+                if(POPULATION_MUTATION_RATE > 1) {
+                    while(POPULATION_MUTATION_RATE - mutations > 1) {
                         matingDNA.set(n, mutate(matingDNA.get(n)));
                         mutations++;
                     }
                 }
-                if(Math.random() <= mutationRate-mutations) {
+                if(Math.random() <= POPULATION_MUTATION_RATE-mutations) {
                     matingDNA.set(n, matingDNA.get(n));
                 }
             }
@@ -96,7 +98,7 @@ public class Algorithm {
      * Uses tournament selection
      */
     private static List<Number> tournamentSelection(List<List<Number>> individualFitness) {
-        int tournamentSize = (int)Math.ceil(individualFitness.size() * Settings.TOURNAMENT_FRACTION);
+        int tournamentSize = (int)Math.ceil(individualFitness.size() * TOURNAMENT_FRACTION);
         if(tournamentSize == 1) tournamentSize = 2;
 
         // Create tournament
@@ -150,7 +152,7 @@ public class Algorithm {
      */
     private static List<Integer> mutate(List<Integer> DNA) {
         int chosenBase = rand.nextInt(DNA.size());
-        int chosenBaseType = Settings.INDIVIDUAL_BASE_TYPES[rand.nextInt(Settings.INDIVIDUAL_BASE_TYPES.length)];
+        int chosenBaseType = Individual.INDIVIDUAL_BASE_TYPES[rand.nextInt(Individual.INDIVIDUAL_BASE_TYPES.length)];
         DNA.set(chosenBase, chosenBaseType);
         return DNA;
     }

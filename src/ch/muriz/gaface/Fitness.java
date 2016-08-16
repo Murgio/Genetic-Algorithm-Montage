@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 public class Fitness {
 
     Phenotype phenotypeObject;
+    // How much more they add to fitness compared to other areas
+    public static final int IMPORTANT_AREAS_SCALE = 3;
 
     /*
      * Determines the fitness of the individual by creating and matching
@@ -89,7 +91,7 @@ public class Fitness {
         Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
         importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
         importantMaskRGBGraphics.dispose();
-        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * Settings.IMPORTANT_AREAS_SCALE;
+        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * IMPORTANT_AREAS_SCALE;
 
         return similarity;
     }

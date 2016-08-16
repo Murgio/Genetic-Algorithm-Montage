@@ -15,11 +15,12 @@ import java.util.List;
 public class Phenotype {
 
     private ImageUtils imageUtils;
+    public static final int INDIVIDUAL_MIN_OPACITY = 50; // [0, 255]
 
     public BufferedImage createPhenotype(List<Integer> DNA) throws IOException{
         // Create a list with the image instance properties out of the DNA
         // in the form [x, y, scale, rotation, opacity]
-        List<List<Integer>> genes = Utils.choppedList(DNA, Settings.INDIVIDUAL_GENE_LENGTH);
+        List<List<Integer>> genes = Utils.choppedList(DNA, Individual.INDIVIDUAL_GENE_LENGTH);
 
         // Create instances of the instance image, and add to the final phenotype
         imageUtils = new ImageUtils();
@@ -49,8 +50,8 @@ public class Phenotype {
             int y = ((gene.get(1) * (h + dimh)) / 100) - dimh;
 
             // Opacity
-            float opacity = ((((255 - Settings.INDIVIDUAL_MIN_OPACITY) * gene.get(4)) / 100.0f)
-                    + Settings.INDIVIDUAL_MIN_OPACITY) / 255.0f;
+            float opacity = ((((255 - INDIVIDUAL_MIN_OPACITY) * gene.get(4)) / 100.0f)
+                    + INDIVIDUAL_MIN_OPACITY) / 255.0f;
             instance = Utils.makeImageTranslucent(instance, opacity);
             // Paste finished product into correct location
             graphics2D.drawImage(instance, x, y, null);
