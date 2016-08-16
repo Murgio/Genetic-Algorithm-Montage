@@ -28,7 +28,8 @@ public class Fitness {
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
         double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
-        return ((similarity - similarityMatch("min")) / (similarityMatch("max") - similarityMatch("min")))*100;
+        double similarityMin = similarityMatch("min");
+        return ((similarity - similarityMin) / (similarityMatch("max") - similarityMin))*100;
     }
 
     /*

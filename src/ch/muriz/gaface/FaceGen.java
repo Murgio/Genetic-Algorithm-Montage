@@ -23,7 +23,7 @@ public class FaceGen {
     // Number new of populations generated
     public static final int GENERATIONS = 100;
     // Every so many generations, write/print a status update
-    public static final int STATUS_INTERVAL = 10;
+    public static final int STATUS_INTERVAL = 1;
 
     public static void main(String[] args) throws FileNotFoundException{
         //Clear out the status directory

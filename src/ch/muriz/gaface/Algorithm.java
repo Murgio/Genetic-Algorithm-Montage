@@ -17,7 +17,6 @@ public class Algorithm {
     public static final float TOURNAMENT_FRACTION = 0.6f;
     static Random rand = new Random();
     static Fitness fitness;
-    static Individual individualI;
 
     // Evolve a population
     public static Population evolvePopulation(Population pop, boolean save, int populationNumber) {
