@@ -1,9 +1,6 @@
 package ch.muriz.gaface;
 
 import java.awt.*;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -11,8 +8,7 @@ import java.util.Random;
 
 public final class Utils {
 
-    // Generates an array with numbers from [0, 100[ (0-99)
-    // = range()
+    // Generates an array with numbers from 0 to 100 (100 excluded)
     public static int[] range(int start, int stop) {
         int[] result = new int[stop-start];
 

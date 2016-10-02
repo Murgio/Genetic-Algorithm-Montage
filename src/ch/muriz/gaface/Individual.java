@@ -11,27 +11,24 @@ public class Individual {
 
     // [x, y, scale, rotation, opacity]
     public static final int INDIVIDUAL_GENE_LENGTH = 5;
-    public static final int INDIVIDUAL_GENES = 250; // Number of images
-
     // DNA Base
     public static final int[] INDIVIDUAL_BASE_TYPES = Utils.range(0, 100);
 
+    private final int individualGenes = 250; // Number of images
 
-    Individual(List<Integer> DNA) {
+
+    public Individual(List<Integer> DNA) {
         baseTypes = INDIVIDUAL_BASE_TYPES;
         geneLength = INDIVIDUAL_GENE_LENGTH;
         // number of images
-        DNALength = geneLength * INDIVIDUAL_GENES;
-        if(DNA == null) {
-            mDNA = createDNA();
-        } else {
-            mDNA = DNA;
-        }
+        DNALength = geneLength * individualGenes;
+        if(DNA == null) mDNA = createDNA();
+        else mDNA = DNA;
     }
 
-    public List<Integer> createDNA() {
+    private List<Integer> createDNA() {
         // Creates a random string of DNA
-        List<Integer> DNA = new ArrayList<Integer>(DNALength);
+        List<Integer> DNA = new ArrayList<>(DNALength);
         for(int i = 0; i < DNALength; i++) {
             DNA.add(Utils.getRandomInt(baseTypes));
         }

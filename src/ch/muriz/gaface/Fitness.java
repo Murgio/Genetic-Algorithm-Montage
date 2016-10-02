@@ -15,15 +15,15 @@ import javax.imageio.ImageIO;
 
 public class Fitness {
 
-    Phenotype phenotypeObject;
+    private Phenotype phenotypeObject;
     // How much more they add to fitness compared to other areas
-    public static final int IMPORTANT_AREAS_SCALE = 3;
+    private final int importantAreasScale = 3;
 
     /*
      * Determines the fitness of the individual by creating and matching
      * the individual's phenotype with the source phenotype (a predefined image)
      */
-    public double calculateFitness(List<Integer> DNA) throws IOException{
+    public double calculateFitness(List<Integer> DNA) throws IOException {
         phenotypeObject = new Phenotype();
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
@@ -53,23 +53,6 @@ public class Fitness {
         }
         return 1/ (Math.sqrt(sumSquaredValues / (w*h)));
     }
-    /*
-     * If no mask is available
-     */
-    private double simpleImageSimilarity(BufferedImage image, BufferedImage match) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
-        // Create histogram with a mask if image is RGBA
-        int[] histogram = Utils.imageHistogram(difference);
-        long sumSquaredValues = 0;
-        long square = 0;
-        for(long n : histogram) {
-            square = n*n;
-            sumSquaredValues += square;
-        }
-        return 1/ (Math.sqrt(sumSquaredValues / (w*h)));
-    }
 
     /*
      * Uses simpleImageSimilarity() and any masks
@@ -77,7 +60,7 @@ public class Fitness {
      * importantMaskRGB = mask.png drew over top of a white, blank image
      */
     private double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
-        double similarity = simpleImageSimilarity(image, match);
+        double similarity = simpleImageSimilarity(image, match, null);
         ImageUtils imageUtils = new ImageUtils();
         BufferedImage importantMask = imageUtils.createImportantMask();
         BufferedImage mask = ImageIO.read(new File("mask.png"));
@@ -92,7 +75,7 @@ public class Fitness {
         Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
         importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
         importantMaskRGBGraphics.dispose();
-        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * IMPORTANT_AREAS_SCALE;
+        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * importantAreasScale;
 
         return similarity;
     }
@@ -112,4 +95,3 @@ public class Fitness {
         return 0.0;
     }
 }
-

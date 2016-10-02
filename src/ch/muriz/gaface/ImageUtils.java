@@ -10,34 +10,34 @@ import javax.imageio.ImageIO;
 
 public class ImageUtils {
 
-    BufferedImage source;
-    BufferedImage alphaSource;
-    BufferedImage mask;
-    public List<BufferedImage> ALPHA_SOURCE_SIZES;
+    private BufferedImage source;
+    private BufferedImage alphaSource;
+    private BufferedImage mask;
+    private List<BufferedImage> alphaSourceSizes;
 
     // File locations
     // Image the individuals are matched against
-    public static final String MATCH_FILE = "match.png";
+    private final String matchFile = "match.png";
     // Image the individuals are based on
-    public static final String INSTANCE_FILE = "instance.png";
+    private final String instanceFile = "instance.png";
     // Sections of image more important than others
-    public static final String IMPORTANT_MASK_FILE = "mask.png";
+    private final String importantMaskFile = "mask.png";
 
-    public static final float INDIVIDUAL_MIN_SCALE = 0.1f; // (0, 1]
-    public static final float INDIVIDUAL_MAX_SCALE = 1.0f; // (0, 1]
+    private final float individualMinScale = 0.1f; // (0, 1]
+    private final float individualMaxScale = 1.0f; // (0, 1]
 
-    ImageUtils() {
+    public ImageUtils() {
         try {
-            source = ImageIO.read(new File(MATCH_FILE));
-            alphaSource = ImageIO.read(new File(INSTANCE_FILE));
-            mask = ImageIO.read(new File(IMPORTANT_MASK_FILE));
+            source = ImageIO.read(new File(matchFile));
+            alphaSource = ImageIO.read(new File(instanceFile));
+            mask = ImageIO.read(new File(importantMaskFile));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /*
-     * Create the alphaSouce image which the individuals will be created from
+     * Create the alphaSource image which the individuals will be created from
      * and the source image which individuals will be matched against
      */
     public BufferedImage init(String picture) throws IOException {
@@ -67,16 +67,16 @@ public class ImageUtils {
      * Create all the possible sizes of images for speeding up
      */
     public List<BufferedImage> createAllSizes() {
-        ALPHA_SOURCE_SIZES = new ArrayList<BufferedImage>();
+        alphaSourceSizes = new ArrayList<>();
         for(int n : Individual.INDIVIDUAL_BASE_TYPES) {
             float scale = n/100.0f;
-            scale = (scale * (INDIVIDUAL_MAX_SCALE - INDIVIDUAL_MIN_SCALE))
-                    + INDIVIDUAL_MIN_SCALE;
+            scale = (scale * (individualMaxScale - individualMinScale))
+                    + individualMinScale;
             BufferedImage instance = Utils.resize(alphaSource, Math.round((alphaSource.getWidth()) * scale),
                     Math.round((alphaSource.getWidth()) * scale));
-            ALPHA_SOURCE_SIZES.add(instance);
+            alphaSourceSizes.add(instance);
         }
-        return ALPHA_SOURCE_SIZES;
+        return alphaSourceSizes;
     }
 
     /*

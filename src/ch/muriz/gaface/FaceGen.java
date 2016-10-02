@@ -1,10 +1,6 @@
 package ch.muriz.gaface;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 /*
  * Creates a new version of an image using instances of the
@@ -18,18 +14,21 @@ import java.util.Scanner;
 
 public class FaceGen {
 
-    // Location to store status information
-    public static final String STATUS_DIR = "/Users/Muriz/Desktop/face_test";
-    // Number new of populations generated
-    public static final int GENERATIONS = 100;
-    // Every so many generations, write/print a status update
-    public static final int STATUS_INTERVAL = 1;
+    public static void main(String[] args) {
+        // Location to store status information
+        final String statusDirection = "/Users/Muriz/Desktop/face_test";
 
-    public static void main(String[] args) throws FileNotFoundException{
+        // Number of new populations generated
+        final int generations = 100;
+
+        // Every so many generations, write/print a status update
+        final int statusInterval = 1;
+
         //Clear out the status directory
-        File dir = new File(STATUS_DIR);
+        File dir = new File(statusDirection);
         purgeDirectory(dir);
 
+        //region Future Update
         /*// Create the intitial population
         if(Settings.SOURCE_GENERATION_FILE != null) {
             System.out.println("Loading source generation file...");
@@ -43,7 +42,7 @@ public class FaceGen {
                 }
             }
             scanner.close();
-            if(oldDNA.size() == Settings.POPULATION_SIZE) {
+            if(oldDNA.size() == Algorithm.POPULATION_SIZE) {
                 System.out.println("Creating population based on source generation file...");
 
             } else {
@@ -54,31 +53,25 @@ public class FaceGen {
             System.out.println("Creating population from scratch...");
             Population population = new Population(true);
         }*/
+        //endregion
 
-        //  ( ͡° ͜ʖ ͡°) Woohoo, new Population!
+        //  ( ͡° ͜ʖ ͡°) Woohoo, first Population!
         Population population = new Population(true);
 
         // Create new populations
         // Every so many generations or the last generation, request a status update
-        int generations = GENERATIONS;
         for(int i = 0; i < generations; i++) {
             long startTime = System.currentTimeMillis();
             //          Update Interval   || Maximum of generations created
-            if((i % STATUS_INTERVAL == 0) || i == (generations-1)) {
-                // Save the population and the picture
-                population = Algorithm.evolvePopulation(population, true, i);
-            } else {
-                population = Algorithm.evolvePopulation(population, false, 0);
-            }
+            if((i % statusInterval == 0) || i == (generations-1))
+                population = Algorithm.evolvePopulation(population, true, i); // Save the population and the picture
+            else population = Algorithm.evolvePopulation(population, false, 0);
             long endTime = System.currentTimeMillis();
-            System.out.println("Generation " + i + ": " + (endTime-startTime) + " seconds");
+            System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000L) + " seconds");
         }
-
     }
 
     private static void purgeDirectory(File dir) {
-        for(File file: dir.listFiles())
-            if (!file.isDirectory())
-                file.delete();
+        for(File file: dir.listFiles()) if (!file.isDirectory()) file.delete();
     }
 }

@@ -10,11 +10,18 @@ import java.util.*;
  * Created by Muriz on 15.08.16.
  */
 public class Algorithm {
-    public static final int POPULATION_SIZE = 30; // Number of Individuals
-    public static final float POPULATION_CROSSOVER_RATE = 0.9f; // [0, infinity)
-    public static final float POPULATION_MUTATION_RATE = 0.1f; // [0, infinity)
+    // Number of Individuals
+    public static final int POPULATION_SIZE = 30;
+    // [0, infinity)
+    public static final float POPULATION_MUTATION_RATE = 0.1f;
+
     // (0, 1] : Fraction of population in tournament
-    public static final float TOURNAMENT_FRACTION = 0.6f;
+    private final float tournamentFraction = 0.6f;
+    // [0, infinity)
+    private final float populationCrossoverRate = 0.9f;
+    // Best fitness found in a generation so far
+    private int bestFitness = 0;
+
     static Random rand = new Random();
     static Fitness fitness;
 
@@ -23,7 +30,7 @@ public class Algorithm {
         fitness = new Fitness();
         Population newPopulation = pop;
         List<List<Integer>> DNAList = newPopulation.getDNAList();
-        List<Double> fitnessList = new ArrayList<Double>();
+        List<Double> fitnessList = new ArrayList<>();
         for(List<Integer> list : DNAList) {
             try {
                 // slow as f*ck
@@ -34,9 +41,9 @@ public class Algorithm {
         }
         System.out.println(fitnessList);
         List<List<Number>> individualFitness = new ArrayList<>();
-        List<Integer> index = new ArrayList<Integer>();
-        List<Double> fitness = new ArrayList<Double>();
-        List<Number> mergedList = new ArrayList<Number>();
+        List<Integer> index = new ArrayList<>();
+        List<Double> fitness = new ArrayList<>();
+        List<Number> mergedList = new ArrayList<>();
         for(int i = 0; i < fitnessList.size(); i++) {
             index.add(i);
             fitness.add(fitnessList.get(i));
@@ -81,13 +88,13 @@ public class Algorithm {
 
             //Crossover the mating pair's DNA so many times according to crossover rate
             int crossovers = 0;
-            if(POPULATION_CROSSOVER_RATE > 1.0f) {
-                while(POPULATION_CROSSOVER_RATE - crossovers > 1) {
+            if(populationCrossoverRate > 1.0f) {
+                while(populationCrossoverRate - crossovers > 1) {
                     matingDNA = crossover(matingDNA);
                     crossovers++;
                 }
             }
-            if(Math.random() <= POPULATION_CROSSOVER_RATE - crossovers) {
+            if(Math.random() <= populationCrossoverRate - crossovers) {
                 matingDNA = crossover(matingDNA);
             }
 
@@ -120,7 +127,7 @@ public class Algorithm {
      * Uses tournament selection
      */
     private static List<Number> tournamentSelection(List<List<Number>> individualFitness) {
-        int tournamentSize = (int)Math.ceil(individualFitness.size() * TOURNAMENT_FRACTION);
+        int tournamentSize = (int)Math.ceil(individualFitness.size() * tournamentFraction);
         if(tournamentSize == 1) tournamentSize = 2;
 
         // Create tournament
@@ -157,13 +164,13 @@ public class Algorithm {
         List<Integer> secondMatingDNA = matingDNA.get(1);
         List<Integer> firstPart = firstMatingDNA.subList(0, firstMatingDNA.size()-pivot);
         List<Integer> secondPart = secondMatingDNA.subList(secondMatingDNA.size()-pivot, secondMatingDNA.size());
-        ArrayList<Integer> firstResult = new ArrayList<Integer>(firstPart);
+        ArrayList<Integer> firstResult = new ArrayList<>(firstPart);
         firstResult.addAll(secondPart);
         result.add(firstResult);
 
         List<Integer> firstPartList2 = secondMatingDNA.subList(0, secondMatingDNA.size()-pivot);
         List<Integer> secondPartList2 = firstMatingDNA.subList(firstMatingDNA.size()-pivot, firstMatingDNA.size());
-        ArrayList<Integer> secondResult = new ArrayList<Integer>(firstPartList2);
+        ArrayList<Integer> secondResult = new ArrayList<>(firstPartList2);
         secondResult.addAll(secondPartList2);
         result.add(secondResult);
         return result;

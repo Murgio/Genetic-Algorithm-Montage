@@ -13,7 +13,7 @@ import java.util.List;
 public class Phenotype {
 
     private ImageUtils imageUtils;
-    public static final int INDIVIDUAL_MIN_OPACITY = 50; // [0, 255]
+    private final int individualMinOpacity = 50; // [0, 255]
 
     public BufferedImage createPhenotype(List<Integer> DNA) throws IOException{
         // Create a list with the image instance properties out of the DNA
@@ -48,8 +48,8 @@ public class Phenotype {
             int y = ((gene.get(1) * (h + dimh)) / 100) - dimh;
 
             // Opacity
-            float opacity = ((((255 - INDIVIDUAL_MIN_OPACITY) * gene.get(4)) / 100.0f)
-                    + INDIVIDUAL_MIN_OPACITY) / 255.0f;
+            float opacity = ((((255 - individualMinOpacity) * gene.get(4)) / 100.0f)
+                    + individualMinOpacity) / 255.0f;
             instance = Utils.makeImageTranslucent(instance, opacity);
             // Paste finished product into correct location
             graphics2D.drawImage(instance, x, y, null);
