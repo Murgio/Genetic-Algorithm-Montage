@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Phenotype {
 
-    private ImageUtils imageUtils;
+    private ImageUtils imageUtils = new ImageUtils();
     private final int individualMinOpacity = 50; // [0, 255]
 
     public BufferedImage createPhenotype(List<Integer> DNA) throws IOException{
@@ -21,7 +21,6 @@ public class Phenotype {
         List<List<Integer>> genes = Utils.choppedList(DNA, Individual.INDIVIDUAL_GENE_LENGTH);
 
         // Create instances of the instance image, and add to the final phenotype
-        imageUtils = new ImageUtils();
         BufferedImage source = imageUtils.init("source");
         int w = source.getWidth(), h = source.getHeight();
         BufferedImage phenotype = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

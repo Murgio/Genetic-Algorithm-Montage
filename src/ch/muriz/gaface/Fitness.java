@@ -15,17 +15,16 @@ import javax.imageio.ImageIO;
 
 public class Fitness {
 
-    private Phenotype phenotypeObject;
+    private Phenotype phenotypeObject = new Phenotype();
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
+    ImageUtils imageUtils = new ImageUtils();
 
     /*
      * Determines the fitness of the individual by creating and matching
      * the individual's phenotype with the source phenotype (a predefined image)
      */
     public double calculateFitness(List<Integer> DNA) throws IOException {
-        phenotypeObject = new Phenotype();
-        ImageUtils imageUtils = new ImageUtils();
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
         double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
         double similarityMin = similarityMatch("min");
@@ -61,7 +60,6 @@ public class Fitness {
      */
     private double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
         double similarity = simpleImageSimilarity(image, match, null);
-        ImageUtils imageUtils = new ImageUtils();
         BufferedImage importantMask = imageUtils.createImportantMask();
         BufferedImage mask = ImageIO.read(new File("mask.png"));
         BufferedImage maskedImage = new BufferedImage(importantMask.getWidth(),
@@ -81,7 +79,6 @@ public class Fitness {
     }
 
     private double similarityMatch(String caseString) throws IOException{
-        ImageUtils imageUtils = new ImageUtils();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
         blurFilter.setHRadius(4); blurFilter.setRadius(4); blurFilter.setIterations(1);
         BufferedImage source = imageUtils.init("source");

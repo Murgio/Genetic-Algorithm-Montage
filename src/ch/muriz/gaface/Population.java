@@ -19,7 +19,7 @@ public class Population {
     // Best fitness found in a generation so far
     private int bestFitness = 0;
     // Location to store status information
-    final String statusDirection = "/Users/Muriz/Desktop/face_test";
+    private final String statusDirection = "/Users/Muriz/Desktop/face_test";
     // File which holds the last generation's DNA
     private final String sourceGenerationFile = null;
 
@@ -28,8 +28,8 @@ public class Population {
     Random rand = new Random();
     Fitness fitness;
 
-    public Population(Population pop) {
-        if(pop == null) populationFromScratch(); // Create new random population
+    public Population() {
+        populationFromScratch(); // Create new random population
     }
 
     /*
@@ -38,14 +38,9 @@ public class Population {
     private void populationFromScratch() {
         for(int i = 0; i < getPopulationSize(); i++) {
             Individual newIndividual = new Individual(null);
-            saveIndividual(newIndividual);
+            individuals.add(newIndividual);
         }
     }
-
-    /*
-     * Save individual
-     */
-    private void saveIndividual(Individual indiv) {individuals.add(indiv);}
 
     public List<List<Integer>> getDNAList() {
         List<List<Integer>> DNAList = new ArrayList<>();
@@ -101,7 +96,7 @@ public class Population {
                 Fitness newFitness = new Fitness();
                 List<Number> individualIndex = individualFitness.get(0);
                 Individual exampleIndividual = pop.individuals.get((int)individualIndex.get(1));
-                double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
+                //double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
                 Phenotype phenotype = new Phenotype();
                 BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
                 ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
