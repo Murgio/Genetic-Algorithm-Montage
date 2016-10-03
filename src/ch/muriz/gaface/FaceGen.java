@@ -56,7 +56,9 @@ public class FaceGen {
         //endregion
 
         //  ( ͡° ͜ʖ ͡°) Woohoo, first Population!
-        Population population = new Population(true);
+        Population population = new Population(null);
+
+        Algorithm algo = new Algorithm();
 
         // Create new populations
         // Every so many generations or the last generation, request a status update
@@ -64,8 +66,8 @@ public class FaceGen {
             long startTime = System.currentTimeMillis();
             //          Update Interval   || Maximum of generations created
             if((i % statusInterval == 0) || i == (generations-1))
-                population = Algorithm.evolvePopulation(population, true, i); // Save the population and the picture
-            else population = Algorithm.evolvePopulation(population, false, 0);
+                population = algo.evolvePopulation(population, true, i); // Save the population and the picture
+            else population = algo.evolvePopulation(population, false, 0);
             long endTime = System.currentTimeMillis();
             System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000L) + " seconds");
         }

@@ -13,10 +13,11 @@ public class Individual {
     public static final int INDIVIDUAL_GENE_LENGTH = 5;
     // DNA Base
     public static final int[] INDIVIDUAL_BASE_TYPES = Utils.range(0, 100);
+    // Number of images
+    private final int individualGenes = 250;
 
-    private final int individualGenes = 250; // Number of images
 
-
+    // TODO Doesn't work like that -> every Indivudal has its own DNA
     public Individual(List<Integer> DNA) {
         baseTypes = INDIVIDUAL_BASE_TYPES;
         geneLength = INDIVIDUAL_GENE_LENGTH;
