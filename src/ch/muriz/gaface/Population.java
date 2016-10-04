@@ -103,12 +103,13 @@ public class Population {
                 e.printStackTrace();
             }
         }
-        individuals.clear();
+        List<Individual> newPopulation = new ArrayList<>();
         for(int i = 0; i < (populationSize /2); i++) {
             List<List<Integer>> matingDNA = new ArrayList<>();
             List<Number> matingPair = tournamentSelection(individualFitness);
             for(Number individualNumber : matingPair) {
-                matingDNA.add(getDNAList().get((int)individualNumber));
+                List<Integer> indiv = getDNAList().get((int)individualNumber);
+                matingDNA.add(indiv);
             }
 
             //Crossover the mating pair's DNA so many times according to crossover rate
@@ -136,13 +137,13 @@ public class Population {
                     matingDNA.set(n, matingDNA.get(n));
                 }
             }
-
             // Add a new individual based on the newly mutated/crossed over DNA to the population
             for(List<Integer> DNA : matingDNA) {
                 Individual newIndiv = new Individual(DNA);
-                individuals.add(newIndiv);
+                newPopulation.add(newIndiv);
             }
         }
+        individuals = newPopulation;
     }
 
     public List<List<Integer>> getSpecificDNAList(int index) {

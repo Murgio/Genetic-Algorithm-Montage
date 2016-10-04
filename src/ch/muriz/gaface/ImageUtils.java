@@ -48,17 +48,18 @@ public class ImageUtils {
                 convertedImg.getGraphics().dispose();
                 source = convertedImg;
                 return source;
-            } else System.out.println("Image source is already type RGB");
+            } else return source;
         }
-        if(picture.equals("alpha") || picture.equals("Alpha")) {
+        else if(picture.equals("alpha") || picture.equals("Alpha")) {
             if (alphaSource.getType() != BufferedImage.TYPE_INT_ARGB) {
                 BufferedImage convertedImg = new BufferedImage(alphaSource.getWidth(), alphaSource.getHeight(), BufferedImage.TYPE_INT_ARGB);
                 convertedImg.getGraphics().drawImage(alphaSource, 0, 0, null);
                 convertedImg.getGraphics().dispose();
                 alphaSource = convertedImg;
                 return alphaSource;
-            } else System.out.println("Image alphaSource is already type RGBA");
-        } else System.out.println("Init failed. Only acceptable Source or Alpha");
+            } else return alphaSource;
+        }
+        else System.out.println("Init failed. Only acceptable Source or Alpha");
 
         return null;
     }
