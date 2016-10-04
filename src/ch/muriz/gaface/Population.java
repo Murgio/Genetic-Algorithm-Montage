@@ -26,16 +26,15 @@ public class Population {
     List<Individual> individuals = new ArrayList<Individual>();
 
     Random rand = new Random();
-    Fitness fitness;
+    Fitness fitness = new Fitness();
 
     public Population() {
-        populationFromScratch(); // Create new random population
     }
 
     /*
      * Creates new random population
      */
-    private void populationFromScratch() {
+    public void populationFromScratch() {
         for(int i = 0; i < getPopulationSize(); i++) {
             Individual newIndividual = new Individual(null);
             individuals.add(newIndividual);
@@ -53,9 +52,8 @@ public class Population {
     }
 
     // Evolve a population
-    public Population evolvePopulation(Population pop, boolean save, int populationNumber) {
-        fitness = new Fitness();
-        List<List<Integer>> DNAList = pop.getDNAList();
+    public void evolvePopulation(boolean save, int populationNumber) {
+        List<List<Integer>> DNAList = getDNAList();
         List<Double> fitnessList = new ArrayList<>();
         for(List<Integer> list : DNAList) {
             try {
@@ -95,7 +93,7 @@ public class Population {
             try {
                 Fitness newFitness = new Fitness();
                 List<Number> individualIndex = individualFitness.get(0);
-                Individual exampleIndividual = pop.individuals.get((int)individualIndex.get(1));
+                Individual exampleIndividual = individuals.get((int)individualIndex.get(1));
                 //double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
                 Phenotype phenotype = new Phenotype();
                 BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
@@ -105,11 +103,12 @@ public class Population {
                 e.printStackTrace();
             }
         }
+        individuals.clear();
         for(int i = 0; i < (populationSize /2); i++) {
             List<List<Integer>> matingDNA = new ArrayList<>();
             List<Number> matingPair = tournamentSelection(individualFitness);
             for(Number individualNumber : matingPair) {
-                matingDNA.add(pop.getDNAList().get((int)individualNumber));
+                matingDNA.add(getDNAList().get((int)individualNumber));
             }
 
             //Crossover the mating pair's DNA so many times according to crossover rate
@@ -141,10 +140,9 @@ public class Population {
             // Add a new individual based on the newly mutated/crossed over DNA to the population
             for(List<Integer> DNA : matingDNA) {
                 Individual newIndiv = new Individual(DNA);
-                pop.individuals.add(newIndiv);
+                individuals.add(newIndiv);
             }
         }
-        return pop;
     }
 
     public List<List<Integer>> getSpecificDNAList(int index) {
