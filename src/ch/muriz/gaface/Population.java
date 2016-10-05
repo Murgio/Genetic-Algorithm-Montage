@@ -5,31 +5,52 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
-public class Population {
+public class Population //implements Runnable
+{
 
     // Number of Individuals
-    private final int populationSize = 30;
-    // [0, infinity)
+    private int populationSize;
+    // [0, ∞)
     private final float populationMutationRate = 0.1f;
     // (0, 1] : Fraction of population in tournament
     private final float tournamentFraction = 0.6f;
-    // [0, infinity)
+    // [0, ∞)
     private final float populationCrossoverRate = 0.9f;
     // Best fitness found in a generation so far
-    private int bestFitness = 0;
+    private double bestFitness = 0;
     // Location to store status information
-    private final String statusDirection = "/Users/Muriz/Desktop/face_test";
+    private final String statusDirection;
     // File which holds the last generation's DNA
     private final String sourceGenerationFile = null;
 
-    List<Individual> individuals = new ArrayList<Individual>();
+    // Holds all the individuals from the current population
+    private List<Individual> individuals = new ArrayList<Individual>();
 
     Random rand = new Random();
     Fitness fitness = new Fitness();
+    private CountDownLatch latch;
 
-    public Population() {
+    public Population(int populationSize, String statusDirection) {
+        this.populationSize = populationSize;
+        this.statusDirection = statusDirection;
+        populationFromScratch();
     }
+
+    //region Multiple Threads
+    /*@Override
+    public void run() {
+        for(List<Integer> list : DNAList) {
+            try {
+                fitnessList.add(fitness.calculateFitness(list));
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+        latch.countDown();
+    }*/
+    //endregion
 
     /*
      * Creates new random population
@@ -41,29 +62,34 @@ public class Population {
         }
     }
 
+    /*
+     * Returns the DNA List from the population
+     */
     public List<List<Integer>> getDNAList() {
-        List<List<Integer>> DNAList = new ArrayList<>();
+        List<List<Integer>> newDNAList = new ArrayList<>();
         if(individuals.size() != 0)
             for(Individual indiv : individuals)
-                DNAList.add(indiv.getDNA());
+                newDNAList.add(indiv.getDNA());
         else System.out.println("There are no individuals");
 
-        return DNAList;
+        return newDNAList;
     }
 
-    // Evolve a population
+    /*
+     * Evolve the population
+     */
     public void evolvePopulation(boolean save, int populationNumber) {
+        // DNA List from the population
         List<List<Integer>> DNAList = getDNAList();
+        // Holds all the fitnesses from every individual in the current population
         List<Double> fitnessList = new ArrayList<>();
         for(List<Integer> list : DNAList) {
             try {
-                // slow as f*ck
                 fitnessList.add(fitness.calculateFitness(list));
-            } catch (IOException e) {
+            } catch(IOException e) {
                 e.printStackTrace();
             }
         }
-        //System.out.println(fitnessList);
         List<List<Number>> individualFitness = new ArrayList<>();
         List<Integer> index = new ArrayList<>();
         List<Double> fitness = new ArrayList<>();
@@ -91,10 +117,10 @@ public class Population {
         // Also save the DNA for all individuals in the last population, and possible best generation
         if(save) {
             try {
-                Fitness newFitness = new Fitness();
                 List<Number> individualIndex = individualFitness.get(0);
                 Individual exampleIndividual = individuals.get((int)individualIndex.get(1));
-                //double exampleIndividualFitness = newFitness.calculateFitness(exampleIndividual.getDNA());
+                double exampleIndividualFitness = this.fitness.calculateFitness(exampleIndividual.getDNA());
+                bestFitness = exampleIndividualFitness;
                 Phenotype phenotype = new Phenotype();
                 BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
                 ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
@@ -220,5 +246,7 @@ public class Population {
     }
 
     // Get population size
-    public int getPopulationSize() {return populationSize;}
+    public int getPopulationSize() {return this.populationSize;}
+
+    public double getBestFitness() {return this.bestFitness;}
 }

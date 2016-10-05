@@ -53,9 +53,8 @@ public class FaceGen {
         }*/
         //endregion
 
-        //  ( ͡° ͜ʖ ͡°) Woohoo, first Population!
-        Population population = new Population();
-        population.populationFromScratch();
+        //  ( ͡° ͜ʖ ͡°) Woohoo, first Population with 30 individuals!
+        Population population = new Population(30, statusDirection);
 
         // Create new populations
         // Every so many generations or the last generation, request a status update
@@ -66,7 +65,7 @@ public class FaceGen {
                  population.evolvePopulation(true, i); // Save the population and the picture
             else population.evolvePopulation(false, -1);
             long endTime = System.currentTimeMillis();
-            System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000L) + " seconds");
+            System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000L) + " seconds" + " Fitness: " + population.getBestFitness());
         }
     }
 }
