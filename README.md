@@ -1,8 +1,11 @@
-![Logo GIF](images/it_took_me_a_really_long_time_to_make_this_but_no_regrets.gif)
-
+<p align="center">
+<img src="images/it_took_me_a_really_long_time_to_make_this_but_no_regrets.gif" width="100%" />
+</p>
 [![Build Status](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage.svg?branch=master)](https://travis-ci.org//Murgio/Genetic-Algorithm-Montage)
 [![Code Health](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master/landscape.svg?style=flat)](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master)
-[![Coverage Status](https://coveralls.io/repos/github/Murgio/Genetic-Algorithm-Montage/badge.svg?branch=master)](https://coveralls.io/github/Murgio/Genetic-Algorithm-Montage?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78889379dbe94fdf8a9c44746e13bd6b)](https://www.codacy.com/app/muriz-se/Genetic-Algorithm-Montage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Murgio/Genetic-Algorithm-Montage&amp;utm_campaign=Badge_Grade)
+[![GitHub issues](https://img.shields.io/github/issues/Murgio/Genetic-Algorithm-Montage.svg)](https://github.com/Murgio/Genetic-Algorithm-Montage/issues)
+[![Github All Releases](https://img.shields.io/github/downloads/Murgio/Genetic-Algorithm-Montage/total.svg?maxAge=2592000)]()
 
 **Genetic algorithm** which creates an **image** out of **instances** of **the same picture**
 
