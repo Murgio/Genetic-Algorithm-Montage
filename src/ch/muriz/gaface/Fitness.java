@@ -19,6 +19,28 @@ public class Fitness {
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
     private ImageUtils imageUtils = new ImageUtils();
+    private double similarityMin;
+    private double similarityMax;
+    private final BufferedImage source = imageUtils.getSource();
+
+    /*
+     * Create image to match fitness against; get max/min fitness values
+     */
+    public Fitness() {
+        BoxBlurFilter blurFilter = new BoxBlurFilter();
+        blurFilter.setHRadius(2); blurFilter.setRadius(2); blurFilter.setIterations(1);
+        try {
+            BufferedImage negativ = imageUtils.createNegativeImage(source);
+            BufferedImage blur = blurFilter.filter(source, null);
+            similarityMin = calculateImageSimilarity(negativ, source);
+            //ImageIO.write(negativ, "png", new File("negativ_java"+ ".png"));
+            similarityMax = calculateImageSimilarity(blur, source);
+            //ImageIO.write(blur, "png", new File("blur_java"+ ".png"));
+            System.out.println("GOOTCHAA");
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
      * Determines the fitness of the individual by creating and matching
@@ -26,9 +48,8 @@ public class Fitness {
      */
     public double calculateFitness(List<Integer> DNA) throws IOException {
         BufferedImage phenotype = phenotypeObject.createPhenotype(DNA);
-        double similarity = calculateImageSimilarity(phenotype, imageUtils.init("source"));
-        double similarityMin = similarityMatch("min");
-        return ((similarity - similarityMin) / (similarityMatch("max") - similarityMin))*100;
+        double similarity = calculateImageSimilarity(phenotype, source);
+        return ((similarity - similarityMin) / (similarityMax - similarityMin))*100;
     }
 
     /*
@@ -76,19 +97,5 @@ public class Fitness {
         similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * importantAreasScale;
 
         return similarity;
-    }
-
-    private double similarityMatch(String caseString) throws IOException{
-        BoxBlurFilter blurFilter = new BoxBlurFilter();
-        blurFilter.setHRadius(4); blurFilter.setRadius(4); blurFilter.setIterations(1);
-        BufferedImage source = imageUtils.init("source");
-        if("min".equals(caseString)) {
-            return calculateImageSimilarity(imageUtils.createNegativeImage(), source);
-        }
-        if("max".equals(caseString)) {
-            return calculateImageSimilarity(blurFilter.filter(source, null), source);
-        }
-        System.out.println("Failed to calculate similarity. Please type min or max");
-        return 0.0;
     }
 }

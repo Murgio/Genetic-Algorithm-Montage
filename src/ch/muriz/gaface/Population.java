@@ -78,19 +78,17 @@ public class Population //implements Runnable
     /*
      * Evolve the population
      */
-    public void evolvePopulation(boolean save, int populationNumber) {
+    public void evolvePopulation(boolean save, int populationNumber) throws IOException {
         // DNA List from the population
         List<List<Integer>> DNAList = getDNAList();
         // Holds all the fitnesses from every individual in the current population
         List<Double> fitnessList = new ArrayList<>();
         for(List<Integer> list : DNAList) {
-            try {
-                fitnessList.add(fitness.calculateFitness(list));
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            // TODO Very slow, let's fix this
+            fitnessList.add(fitness.calculateFitness(list));
         }
         List<List<Number>> individualFitness = new ArrayList<>();
+        // Helps us to create a list in form: [(fitness, 0), (fitness, 1), ...]
         List<Number> mergedList = new ArrayList<>();
         for(int i = 0; i < fitnessList.size(); i++) {
             mergedList.add(fitnessList.get(i));
@@ -103,23 +101,17 @@ public class Population //implements Runnable
                 return Double.compare((double)list1.get(0), (double)list2.get(0));
             }
         });
-        Collections.reverse(mergedList);
+        Collections.reverse(individualFitness);
 
         // If requested, give a status update with the most fit individual from the old population
         // Also save the DNA for all individuals in the last population, and possible best generation
         if(save) {
-            try {
-                List<Number> individualIndex = individualFitness.get(0);
-                Individual exampleIndividual = individuals.get((int)individualIndex.get(1));
-                double exampleIndividualFitness = this.fitness.calculateFitness(exampleIndividual.getDNA());
-                bestFitness = exampleIndividualFitness;
-                Phenotype phenotype = new Phenotype();
-                BufferedImage phenotypeImage = phenotype.createPhenotype(exampleIndividual.getDNA());
-                ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            List<Number> individualIndex = individualFitness.get(0);
+            Individual bestSoFarIndividual = individuals.get((int)individualIndex.get(1));
+            setBestFitness((double)individualIndex.get(0));
+            Phenotype phenotype = new Phenotype();
+            BufferedImage phenotypeImage = phenotype.createPhenotype(bestSoFarIndividual.getDNA());
+            ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
         }
         List<Individual> newPopulation = new ArrayList<>();
         for(int i = 0; i < (populationSize /2); i++) {
@@ -241,4 +233,6 @@ public class Population //implements Runnable
     public int getPopulationSize() {return this.populationSize;}
 
     public double getBestFitness() {return this.bestFitness;}
+
+    public void setBestFitness(double bestFitness) {this.bestFitness = bestFitness;}
 }

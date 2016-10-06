@@ -11,9 +11,8 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
     public BufferedImage filter( BufferedImage src, BufferedImage imageDistance ) {
         int width = src.getWidth();
         int height = src.getHeight();
-        BufferedImage newImageDistance = imageDistance;
 
-        if (imageDistance == null) newImageDistance = createCompatibleDestImage( src, null );
+        if (imageDistance == null) imageDistance = createCompatibleDestImage( src, null );
 
         int[] inPixels = new int[width*height];
         int[] outPixels = new int[width*height];
@@ -24,8 +23,8 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
             blur(outPixels, inPixels, height, width, vRadius);
         }
 
-        setRGB(newImageDistance, 0, 0, width, height, inPixels);
-        return newImageDistance;
+        setRGB(imageDistance, 0, 0, width, height, inPixels);
+        return imageDistance;
     }
 
     public static void blur( int[] in, int[] out, int width, int height, int radius ) {

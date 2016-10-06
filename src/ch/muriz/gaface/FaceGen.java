@@ -1,6 +1,7 @@
 package ch.muriz.gaface;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Creates a new version of an image using instances of the
@@ -11,7 +12,7 @@ import java.io.File;
 
 public class FaceGen {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Location to store status information
         final String statusDirection = "/Users/Muriz/Desktop/face_test";
         // Number of new populations generated
@@ -62,7 +63,7 @@ public class FaceGen {
                  population.evolvePopulation(true, i); // Save the population and the picture
             else population.evolvePopulation(false, -1);
             long endTime = System.currentTimeMillis();
-            System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000L) + " seconds" + " Fitness: " + population.getBestFitness());
+            System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000f) + " seconds" + " Fitness: " + population.getBestFitness());
         }
     }
 }
