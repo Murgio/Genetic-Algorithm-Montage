@@ -179,6 +179,8 @@
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
+
+  <target name="test" depends="all" />
   
   <target name="clean" depends="clean.module.ga_face_generator" description="cleanup all"/>
   
