@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage.svg?branch=master)](https://travis-ci.org//Murgio/Genetic-Algorithm-Montage)
 [![Code Health](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master/landscape.svg?style=flat)](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master)
+[![Coverage Status](https://coveralls.io/repos/github/Murgio/Genetic-Algorithm-Montage/badge.svg?branch=master)](https://coveralls.io/github/Murgio/Genetic-Algorithm-Montage?branch=master)
 
 **Genetic algorithm** which creates an **image** out of **instances** of **the same picture**
 
