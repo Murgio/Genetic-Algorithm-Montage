@@ -2,13 +2,10 @@ package ch.muriz.gaface;
 
 import java.io.File;
 
-/*
+/**
  * Creates a new version of an image using instances of the
  * same image which are overlaid and transparent in different levels.
  * Uses genetic algorithms to create the final image.
- */
-
-/**
  * Created by Muriz on 13.08.16.
  */
 

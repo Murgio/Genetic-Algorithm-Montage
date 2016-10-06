@@ -91,18 +91,10 @@ public class Population //implements Runnable
             }
         }
         List<List<Number>> individualFitness = new ArrayList<>();
-        List<Integer> index = new ArrayList<>();
-        List<Double> fitness = new ArrayList<>();
         List<Number> mergedList = new ArrayList<>();
         for(int i = 0; i < fitnessList.size(); i++) {
-            index.add(i);
-            fitness.add(fitnessList.get(i));
-        }
-        for(int index1 : index) {
-            for(double index2 : fitness) {
-                mergedList.add(index2);
-                mergedList.add(index1);
-            }
+            mergedList.add(fitnessList.get(i));
+            mergedList.add(i);
         }
         individualFitness = Utils.choppedList(mergedList, 2);
         Collections.sort(individualFitness, new Comparator<List<Number>>() {
