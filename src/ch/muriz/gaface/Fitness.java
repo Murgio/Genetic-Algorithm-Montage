@@ -18,7 +18,7 @@ public class Fitness {
     private Phenotype phenotypeObject = new Phenotype();
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
-    ImageUtils imageUtils = new ImageUtils();
+    private ImageUtils imageUtils = new ImageUtils();
 
     /*
      * Determines the fitness of the individual by creating and matching
@@ -82,10 +82,10 @@ public class Fitness {
         BoxBlurFilter blurFilter = new BoxBlurFilter();
         blurFilter.setHRadius(4); blurFilter.setRadius(4); blurFilter.setIterations(1);
         BufferedImage source = imageUtils.init("source");
-        if(caseString.equals("min")) {
+        if("min".equals(caseString)) {
             return calculateImageSimilarity(imageUtils.createNegativeImage(), source);
         }
-        if(caseString.equals("max")) {
+        if("max".equals(caseString)) {
             return calculateImageSimilarity(blurFilter.filter(source, null), source);
         }
         System.out.println("Failed to calculate similarity. Please type min or max");

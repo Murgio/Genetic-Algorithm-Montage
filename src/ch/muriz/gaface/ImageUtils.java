@@ -41,7 +41,7 @@ public class ImageUtils {
      * and the source image which individuals will be matched against
      */
     public BufferedImage init(String picture) throws IOException {
-        if(picture.equals("source") || picture.equals("Source")) {
+        if("source".equals(picture) || "Source".equals(picture)) {
             if (source.getType() != BufferedImage.TYPE_INT_RGB) {
                 BufferedImage convertedImg = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
                 convertedImg.getGraphics().drawImage(source, 0, 0, null);
@@ -50,7 +50,7 @@ public class ImageUtils {
                 return source;
             } else return source;
         }
-        else if(picture.equals("alpha") || picture.equals("Alpha")) {
+        else if("alpha".equals(picture) || "Alpha".equals(picture)) {
             if (alphaSource.getType() != BufferedImage.TYPE_INT_ARGB) {
                 BufferedImage convertedImg = new BufferedImage(alphaSource.getWidth(), alphaSource.getHeight(), BufferedImage.TYPE_INT_ARGB);
                 convertedImg.getGraphics().drawImage(alphaSource, 0, 0, null);

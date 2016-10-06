@@ -9,21 +9,21 @@ import java.awt.image.*;
  */
 public abstract class AbstractBufferedImageOp implements BufferedImageOp {
 
-    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {
-        if ( dstCM == null )
-            dstCM = src.getColorModel();
-        return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()), dstCM.isAlphaPremultiplied(), null);
+    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel colorModel) {
+        if ( colorModel == null )
+            colorModel = src.getColorModel();
+        return new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(src.getWidth(), src.getHeight()), colorModel.isAlphaPremultiplied(), null);
     }
 
     public Rectangle2D getBounds2D( BufferedImage src ) {
         return new Rectangle(0, 0, src.getWidth(), src.getHeight());
     }
 
-    public Point2D getPoint2D( Point2D srcPt, Point2D dstPt ) {
-        if ( dstPt == null )
-            dstPt = new Point2D.Double();
-        dstPt.setLocation( srcPt.getX(), srcPt.getY() );
-        return dstPt;
+    public Point2D getPoint2D( Point2D srcPt, Point2D point2D ) {
+        if ( point2D == null )
+            point2D = new Point2D.Double();
+        point2D.setLocation( srcPt.getX(), srcPt.getY() );
+        return point2D;
     }
 
     public RenderingHints getRenderingHints() {

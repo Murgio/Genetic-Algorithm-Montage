@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Individual {
     private int[] baseTypes;
-    private int geneLength;
     private int DNALength;
     private List<Integer> mDNA;
 
@@ -20,9 +19,8 @@ public class Individual {
     // TODO Doesn't work like that -> every Indivudal has its own DNA
     public Individual(List<Integer> DNA) {
         baseTypes = INDIVIDUAL_BASE_TYPES;
-        geneLength = INDIVIDUAL_GENE_LENGTH;
         // number of images
-        DNALength = geneLength * individualGenes;
+        DNALength = INDIVIDUAL_GENE_LENGTH * individualGenes;
         if(DNA == null) mDNA = createDNA();
         else mDNA = DNA;
     }

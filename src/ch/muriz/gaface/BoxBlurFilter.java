@@ -1,8 +1,6 @@
 package ch.muriz.gaface;
 
-import java.awt.*;
 import java.awt.image.*;
-import java.awt.geom.*;
 
 public class BoxBlurFilter extends AbstractBufferedImageOp {
 
@@ -10,12 +8,12 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
     private int vRadius;
     private int iterations = 1;
 
-    public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
+    public BufferedImage filter( BufferedImage src, BufferedImage imageDistance ) {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if ( dst == null )
-            dst = createCompatibleDestImage( src, null );
+        if ( imageDistance == null )
+            imageDistance = createCompatibleDestImage( src, null );
 
         int[] inPixels = new int[width*height];
         int[] outPixels = new int[width*height];
@@ -26,8 +24,8 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
             blur( outPixels, inPixels, height, width, vRadius );
         }
 
-        setRGB( dst, 0, 0, width, height, inPixels );
-        return dst;
+        setRGB( imageDistance, 0, 0, width, height, inPixels );
+        return imageDistance;
     }
 
     public static void blur( int[] in, int[] out, int width, int height, int radius ) {
@@ -42,10 +40,12 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 
         for ( int y = 0; y < height; y++ ) {
             int outIndex = y;
-            int ta = 0, tr = 0, tg = 0, tb = 0;
-
+            int ta = 0;
+            int tr = 0;
+            int tg = 0;
+            int tb = 0;
             for ( int i = -radius; i <= radius; i++ ) {
-                int rgb = in[inIndex + ImageMath.clamp(i, 0, width-1)];
+                int rgb = in[inIndex + clamp(i, 0, width-1)];
                 ta += (rgb >> 24) & 0xff;
                 tr += (rgb >> 16) & 0xff;
                 tg += (rgb >> 8) & 0xff;
@@ -74,36 +74,28 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
         }
     }
 
+    /**
+     * Clamp a value to an interval.
+     *
+     * @param a the lower clamp threshold
+     * @param b the upper clamp threshold
+     * @param x the input parameter
+     * @return the clamped value
+     */
+    public static int clamp(int x, int a, int b) {
+        return (x < a) ? a : (x > b) ? b : x;
+    }
+
     public void setHRadius(int hRadius) {
         this.hRadius = hRadius;
-    }
-
-    public int getHRadius() {
-        return hRadius;
-    }
-
-    public void setVRadius(int vRadius) {
-        this.vRadius = vRadius;
-    }
-
-    public int getVRadius() {
-        return vRadius;
     }
 
     public void setRadius(int radius) {
         this.hRadius = this.vRadius = radius;
     }
 
-    public int getRadius() {
-        return hRadius;
-    }
-
     public void setIterations(int iterations) {
         this.iterations = iterations;
-    }
-
-    public int getIterations() {
-        return iterations;
     }
 
     public String toString() {

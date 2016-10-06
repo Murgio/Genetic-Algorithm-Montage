@@ -28,8 +28,8 @@ public class Population //implements Runnable
     // Holds all the individuals from the current population
     private List<Individual> individuals = new ArrayList<Individual>();
 
-    Random rand = new Random();
-    Fitness fitness = new Fitness();
+    private Random rand = new Random();
+    private Fitness fitness = new Fitness();
     private CountDownLatch latch;
 
     public Population(int populationSize, String statusDirection) {
