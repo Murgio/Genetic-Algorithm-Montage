@@ -2,6 +2,7 @@ package ch.muriz.gaface;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Creates a new version of an image using instances of the
@@ -60,7 +61,7 @@ public class FaceGen {
             long startTime = System.currentTimeMillis();
             //          Update Interval   || Maximum of generations created
             if((i % statusInterval == 0) || i == (generations-1))
-                 population.evolvePopulation(true, i); // Save the population and the picture
+                population.evolvePopulation(true, i); // Save the population and the picture
             else population.evolvePopulation(false, -1);
             long endTime = System.currentTimeMillis();
             System.out.println("Generation " + i + ": " + ((endTime-startTime)/1000f) + " seconds" + " Fitness: " + population.getBestFitness());

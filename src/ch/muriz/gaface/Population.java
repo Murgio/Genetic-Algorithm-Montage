@@ -9,7 +9,6 @@ import java.util.concurrent.CountDownLatch;
 
 public class Population //implements Runnable
 {
-
     // Number of Individuals
     private int populationSize;
     // [0, ∞)
@@ -83,10 +82,13 @@ public class Population //implements Runnable
         List<List<Integer>> DNAList = getDNAList();
         // Holds all the fitnesses from every individual in the current population
         List<Double> fitnessList = new ArrayList<>();
+        long startTime = System.currentTimeMillis();
         for(List<Integer> list : DNAList) {
             // TODO Very slow, let's fix this
             fitnessList.add(fitness.calculateFitness(list));
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("TIME: " + ((endTime-startTime)/1000f) + " seconds");
         List<List<Number>> individualFitness = new ArrayList<>();
         // Helps us to create a list in form: [(fitness, 0), (fitness, 1), ...]
         List<Number> mergedList = new ArrayList<>();
@@ -223,13 +225,12 @@ public class Population //implements Runnable
      * Randomly mutates a piece of DNA
      */
     private List<Integer> mutate(List<Integer> DNA) {
-        int chosenBase = rand.nextInt(DNA.size());
-        int chosenBaseType = Individual.INDIVIDUAL_BASE_TYPES[rand.nextInt(Individual.INDIVIDUAL_BASE_TYPES.length)];
-        DNA.set(chosenBase, chosenBaseType);
+        int chosenBaseIndex = rand.nextInt(DNA.size());
+        int chosenBaseValue = Utils.getRandomInt(Individual.INDIVIDUAL_BASE_TYPES);
+        DNA.set(chosenBaseIndex, chosenBaseValue);
         return DNA;
     }
 
-    // Get population size
     public int getPopulationSize() {return this.populationSize;}
 
     public double getBestFitness() {return this.bestFitness;}

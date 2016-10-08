@@ -36,7 +36,6 @@ public class Fitness {
             //ImageIO.write(negativ, "png", new File("negativ_java"+ ".png"));
             similarityMax = calculateImageSimilarity(blur, source);
             //ImageIO.write(blur, "png", new File("blur_java"+ ".png"));
-            System.out.println("GOOTCHAA");
         } catch(IOException e) {
             e.printStackTrace();
         }

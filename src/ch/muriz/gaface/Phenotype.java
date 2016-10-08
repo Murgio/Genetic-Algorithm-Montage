@@ -41,9 +41,9 @@ public class Phenotype {
     /*
      * Create all the possible sizes of images for speeding up
      */
-    public List<BufferedImage> createAllSizes() throws IOException {
+    private List<BufferedImage> createAllSizes() throws IOException {
         BufferedImage alphaSource = getAlphaSource();
-        for(int n : Individual.INDIVIDUAL_BASE_TYPES) {
+        for(int n = 0; n < 100; n++) {
             float scale = n/100.0f;
             scale = (scale * (individualMaxScale - individualMinScale))
                     + individualMinScale;
