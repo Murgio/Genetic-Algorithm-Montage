@@ -27,11 +27,13 @@ public class Population //implements Runnable
     // Holds all the individuals from the current population
     private List<Individual> individuals = new ArrayList<Individual>();
 
-    private Random rand = new Random();
-    private Fitness fitness = new Fitness();
+    private Random rand;
+    private Fitness fitness;
     private CountDownLatch latch;
 
     public Population(int populationSize, String statusDirection) {
+        rand = new Random();
+        fitness = new Fitness();
         this.populationSize = populationSize;
         this.statusDirection = statusDirection;
         populationFromScratch();
@@ -82,13 +84,13 @@ public class Population //implements Runnable
         List<List<Integer>> DNAList = getDNAList();
         // Holds all the fitnesses from every individual in the current population
         List<Double> fitnessList = new ArrayList<>();
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
         for(List<Integer> list : DNAList) {
             // TODO Very slow, let's fix this
             fitnessList.add(fitness.calculateFitness(list));
         }
-        long endTime = System.currentTimeMillis();
-        System.out.println("TIME: " + ((endTime-startTime)/1000f) + " seconds");
+        //long endTime = System.currentTimeMillis();
+        //System.out.println("TIME: " + ((endTime-startTime)/1000f) + " seconds");
         List<List<Number>> individualFitness = new ArrayList<>();
         // Helps us to create a list in form: [(fitness, 0), (fitness, 1), ...]
         List<Number> mergedList = new ArrayList<>();
@@ -111,8 +113,7 @@ public class Population //implements Runnable
             List<Number> individualIndex = individualFitness.get(0);
             Individual bestSoFarIndividual = individuals.get((int)individualIndex.get(1));
             setBestFitness((double)individualIndex.get(0));
-            Phenotype phenotype = new Phenotype();
-            BufferedImage phenotypeImage = phenotype.createPhenotype(bestSoFarIndividual.getDNA());
+            BufferedImage phenotypeImage = fitness.getPicture(bestSoFarIndividual.getDNA());
             ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
         }
         List<Individual> newPopulation = new ArrayList<>();

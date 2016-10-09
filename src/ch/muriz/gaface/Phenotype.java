@@ -19,7 +19,19 @@ public class Phenotype {
     private final float individualMinScale = 0.1f; // (0, 1]
     private final float individualMaxScale = 1.0f; // (0, 1]
 
-    private List<BufferedImage> alphaSourceSizes = new ArrayList<>();
+    // Creat previously for more speed
+    private List<BufferedImage> allSizes = new ArrayList<>();
+    private int w, h;
+
+    public Phenotype() {
+        try {
+            BufferedImage src = ImageIO.read(new File("match.png"));
+            w = src.getWidth(); h = src.getHeight();
+            allSizes = createAllSizes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
      * Image the individuals are based on
@@ -42,6 +54,7 @@ public class Phenotype {
      * Create all the possible sizes of images for speeding up
      */
     private List<BufferedImage> createAllSizes() throws IOException {
+        List<BufferedImage> alphaSourceSizes = new ArrayList<>();
         BufferedImage alphaSource = getAlphaSource();
         for(int n = 0; n < 100; n++) {
             float scale = n/100.0f;
@@ -55,21 +68,15 @@ public class Phenotype {
     }
 
     public BufferedImage createPhenotype(List<Integer> DNA) throws IOException {
-        ImageUtils imageUtils = new ImageUtils();
         // Create a list with the image instance properties out of the DNA
         // in the form [x, y, scale, rotation, opacity]
         List<List<Integer>> genes = Utils.choppedList(DNA, Individual.INDIVIDUAL_GENE_LENGTH);
 
         // Create instances of the instance image, and add to the final phenotype
-        BufferedImage source = imageUtils.getSource();
-        int w = source.getWidth(), h = source.getHeight();
         BufferedImage phenotype = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2D = phenotype.createGraphics();
         graphics2D.setBackground(Color.WHITE);
         graphics2D.clearRect(0, 0, phenotype.getWidth(), phenotype.getHeight());
-
-        // Creat previously for more speed
-        List<BufferedImage> allSizes = createAllSizes();
 
         // [0, 1,   2,      3,        4]
         // [x, y, scale, rotation, opacity]

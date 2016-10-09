@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 public class ImageUtils {
 
-    private BufferedImage source;
     // Image the individuals are matched against
+    private BufferedImage source;
     private final String matchFile = "match.png";
 
     public ImageUtils() {
@@ -36,8 +36,7 @@ public class ImageUtils {
         int width = original.getWidth();
         int height = original.getHeight();
         //convert to negative
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++){
+        for(int y = 0; y < height; y++) for(int x = 0; x < width; x++) {
                 int p = original.getRGB(x,y);
                 int a = (p>>24)&0xff;
                 int r = (p>>16)&0xff;
@@ -50,7 +49,6 @@ public class ImageUtils {
                 //set new RGB value
                 p = (a<<24) | (r<<16) | (g<<8) | b;
                 negativImage.setRGB(x, y, p);
-            }
         }
         return negativImage;
     }

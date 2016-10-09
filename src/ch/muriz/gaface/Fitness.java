@@ -15,8 +15,8 @@ import javax.imageio.ImageIO;
 
 public class Fitness {
 
-    private Phenotype phenotypeObject = new Phenotype();
-    private ImageUtils imageUtils = new ImageUtils();
+    private Phenotype phenotypeObject;
+    private ImageUtils imageUtils;
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
     private double similarityMin;
@@ -31,6 +31,8 @@ public class Fitness {
      */
     public Fitness() {
         long start = System.currentTimeMillis();
+        phenotypeObject = new Phenotype();
+        imageUtils = new ImageUtils();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
         blurFilter.setHRadius(2); blurFilter.setRadius(2); blurFilter.setIterations(1);
         try {
@@ -44,7 +46,11 @@ public class Fitness {
             e.printStackTrace();
         }
         long end= System.currentTimeMillis();
-        System.out.println("FitnessTime: "+ (end-start)/1000f);
+        System.out.println("FitnessConstructor: "+ (end-start)/1000f);
+    }
+
+    public BufferedImage getPicture(List<Integer> DNA) throws IOException {
+        return phenotypeObject.createPhenotype(DNA);
     }
 
     /*
