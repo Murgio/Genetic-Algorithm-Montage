@@ -161,8 +161,7 @@ public class Population //implements Runnable
     public List<List<Integer>> getSpecificDNAList(int index) {
         List<List<Integer>> specificDNAList = new ArrayList<>();
         if(individuals.size() != 0) specificDNAList.add(individuals.get(index).getDNA());
-        else System.out.println("The specific individual doesn't exist");
-
+        else System.out.println("The specific individual doesn't exist. Available: 0 - "+(getPopulationSize()-1));
         return specificDNAList;
     }
 

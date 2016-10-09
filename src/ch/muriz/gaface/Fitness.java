@@ -3,7 +3,6 @@ package ch.muriz.gaface;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +23,7 @@ public class Fitness {
     private double similarityMax;
     private BufferedImage source;
     private BufferedImage blackWhiteMask;
+    // Sections of image more important than others
     private BufferedImage mask;
 
     /*
@@ -104,19 +104,17 @@ public class Fitness {
 
     /*
      * Creates important areas mask to check for in fitness function
-     * Returns image with only the alpha channel
+     * Returns the image with only the alpha channel
      */
     public BufferedImage createBlackWhiteMask() throws IOException {
         BufferedImage alphaChannel = new BufferedImage(mask.getWidth(), mask.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
-        for (int x = 0; x < alphaChannel.getWidth(); x++) {
-            for (int y = 0; y < alphaChannel.getHeight(); y++) {
+        for (int x = 0; x < alphaChannel.getWidth(); x++) for (int y = 0; y < alphaChannel.getHeight(); y++) {
                 // blue = pix & 0xFF; green = (pix>>8) & 0xFF; red = (pix>>16) & 0xFF; alpha = (pix>>24) & 0xFF;
                 int alpha = (mask.getRGB(x, y) >> 24) & 0xff;
                 // Every transparent pixel is now black
                 if (alpha == 0) alphaChannel.setRGB(x, y, Color.black.getRGB());
                 // Every ohter pixel is now white
                 else alphaChannel.setRGB(x, y, Color.white.getRGB());
-            }
         }
         return alphaChannel;
     }

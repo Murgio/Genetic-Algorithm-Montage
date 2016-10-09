@@ -33,7 +33,7 @@ public class Phenotype {
             alphaSource = convertedImg;
             return alphaSource;
         } else {
-            System.out.println("Phenotype.java: We got an exception over here mister, pls fix this.");
+            System.err.println("Phenotype.java: We got an exception over here mister, pls fix this.");
             return alphaSource;
         }
     }

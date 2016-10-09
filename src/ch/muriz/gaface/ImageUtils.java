@@ -1,22 +1,15 @@
 package ch.muriz.gaface;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 public class ImageUtils {
 
     private BufferedImage source;
-    //private BufferedImage mask;
-
-    // File locations
     // Image the individuals are matched against
     private final String matchFile = "match.png";
-    // Sections of image more important than others
-    //private final String importantMaskFile = "mask.png";
 
     public ImageUtils() {
         try {
@@ -25,7 +18,6 @@ public class ImageUtils {
             convertedImg.getGraphics().drawImage(source, 0, 0, null);
             convertedImg.getGraphics().dispose();
             source = convertedImg;
-            //mask = ImageIO.read(new File(importantMaskFile));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -21,9 +21,8 @@ public class Individual {
     private List<Integer> createDNA() {
         // Creates a random string of DNA
         List<Integer> DNA = new ArrayList<>();
-        for(int i = 0; i < DNALength; i++) {
+        for(int i = 0; i < DNALength; i++)
             DNA.add(Utils.getRandomInt(INDIVIDUAL_BASE_TYPES));
-        }
         return DNA;
     }
 
