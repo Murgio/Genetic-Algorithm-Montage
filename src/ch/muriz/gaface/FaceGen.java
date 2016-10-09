@@ -2,7 +2,6 @@ package ch.muriz.gaface;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Creates a new version of an image using instances of the

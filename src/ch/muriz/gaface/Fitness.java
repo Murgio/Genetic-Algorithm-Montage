@@ -3,6 +3,7 @@ package ch.muriz.gaface;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,29 +17,34 @@ import javax.imageio.ImageIO;
 public class Fitness {
 
     private Phenotype phenotypeObject = new Phenotype();
+    private ImageUtils imageUtils = new ImageUtils();
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
-    private ImageUtils imageUtils = new ImageUtils();
     private double similarityMin;
     private double similarityMax;
-    private final BufferedImage source = imageUtils.getSource();
+    private BufferedImage source;
+    private BufferedImage blackWhiteMask;
+    private BufferedImage mask;
 
     /*
      * Create image to match fitness against; get max/min fitness values
      */
     public Fitness() {
+        long start = System.currentTimeMillis();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
         blurFilter.setHRadius(2); blurFilter.setRadius(2); blurFilter.setIterations(1);
         try {
-            BufferedImage negativ = imageUtils.createNegativeImage(source);
-            BufferedImage blur = blurFilter.filter(source, null);
-            similarityMin = calculateImageSimilarity(negativ, source);
-            //ImageIO.write(negativ, "png", new File("negativ_java"+ ".png"));
-            similarityMax = calculateImageSimilarity(blur, source);
-            //ImageIO.write(blur, "png", new File("blur_java"+ ".png"));
+            source = imageUtils.getSource();
+            mask = ImageIO.read(new File("mask.png"));
+            blackWhiteMask = createBlackWhiteMask();
+
+            similarityMin = calculateImageSimilarity(imageUtils.createNegativeImage(source), source);
+            similarityMax = calculateImageSimilarity(blurFilter.filter(source, null), source);
         } catch(IOException e) {
             e.printStackTrace();
         }
+        long end= System.currentTimeMillis();
+        System.out.println("FitnessTime: "+ (end-start)/1000f);
     }
 
     /*
@@ -65,7 +71,7 @@ public class Fitness {
         //BufferedImage maskWithAlpha = ImageIO.read(new File("mask.png"));
         int[] histogram = Utils.imageHistogram(difference);
         long sumSquaredValues = 0;
-        long square = 0;
+        long square;
         for(long n : histogram) {
             square = n*n;
             sumSquaredValues += square;
@@ -80,21 +86,38 @@ public class Fitness {
      */
     private double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
         double similarity = simpleImageSimilarity(image, match, null);
-        BufferedImage importantMask = imageUtils.createImportantMask();
-        BufferedImage mask = ImageIO.read(new File("mask.png"));
-        BufferedImage maskedImage = new BufferedImage(importantMask.getWidth(),
-                importantMask.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage maskedImage = new BufferedImage(blackWhiteMask.getWidth(),
+                blackWhiteMask.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D maskedGraphics = maskedImage.createGraphics();
         maskedGraphics.setBackground(Color.WHITE);
         maskedGraphics.clearRect(0, 0, maskedImage.getWidth(), maskedImage.getHeight());
         maskedGraphics.dispose();
         BufferedImage importantMaskRGB = maskedImage;
-        maskedImage = Utils.applyGrayscaleMaskToAlpha(image, importantMask);
+        maskedImage = Utils.applyGrayscaleMaskToAlpha(image, blackWhiteMask);
         Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
         importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
         importantMaskRGBGraphics.dispose();
-        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, importantMask) * importantAreasScale;
+        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, blackWhiteMask) * importantAreasScale;
 
         return similarity;
+    }
+
+    /*
+     * Creates important areas mask to check for in fitness function
+     * Returns image with only the alpha channel
+     */
+    public BufferedImage createBlackWhiteMask() throws IOException {
+        BufferedImage alphaChannel = new BufferedImage(mask.getWidth(), mask.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
+        for (int x = 0; x < alphaChannel.getWidth(); x++) {
+            for (int y = 0; y < alphaChannel.getHeight(); y++) {
+                // blue = pix & 0xFF; green = (pix>>8) & 0xFF; red = (pix>>16) & 0xFF; alpha = (pix>>24) & 0xFF;
+                int alpha = (mask.getRGB(x, y) >> 24) & 0xff;
+                // Every transparent pixel is now black
+                if (alpha == 0) alphaChannel.setRGB(x, y, Color.black.getRGB());
+                // Every ohter pixel is now white
+                else alphaChannel.setRGB(x, y, Color.white.getRGB());
+            }
+        }
+        return alphaChannel;
     }
 }

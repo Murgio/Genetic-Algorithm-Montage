@@ -1,5 +1,6 @@
 package ch.muriz.gaface;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,25 +36,17 @@ public class ImageUtils {
     }
 
     /*
-     * Creates important areas mask to check for in fitness function
-     */
-    // TODO Make this work without to read it directly
-    // Convert image to an image with only the alpha channel
-    public BufferedImage createImportantMask() throws IOException {
-        return ImageIO.read(new File("single_mask.png"));
-    }
-
-    /*
      * Converts the source image into negative
      */
-    public BufferedImage createNegativeImage(BufferedImage negativ) {
+    public BufferedImage createNegativeImage(BufferedImage original) {
+        BufferedImage negativImage = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
         //get image width and height
-        int width = negativ.getWidth();
-        int height = negativ.getHeight();
+        int width = original.getWidth();
+        int height = original.getHeight();
         //convert to negative
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
-                int p = negativ.getRGB(x,y);
+                int p = original.getRGB(x,y);
                 int a = (p>>24)&0xff;
                 int r = (p>>16)&0xff;
                 int g = (p>>8)&0xff;
@@ -64,9 +57,9 @@ public class ImageUtils {
                 b = 255 - b;
                 //set new RGB value
                 p = (a<<24) | (r<<16) | (g<<8) | b;
-                negativ.setRGB(x, y, p);
+                negativImage.setRGB(x, y, p);
             }
         }
-        return negativ;
+        return negativImage;
     }
 }
