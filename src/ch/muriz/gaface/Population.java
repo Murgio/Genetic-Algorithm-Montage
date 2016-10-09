@@ -29,11 +29,13 @@ public class Population //implements Runnable
 
     private Random rand;
     private Fitness fitness;
+    private Phenotype phenotype;
     private CountDownLatch latch;
 
     public Population(int populationSize, String statusDirection) {
         rand = new Random();
         fitness = new Fitness();
+        phenotype = new Phenotype();
         this.populationSize = populationSize;
         this.statusDirection = statusDirection;
         populationFromScratch();
@@ -113,7 +115,7 @@ public class Population //implements Runnable
             List<Number> individualIndex = individualFitness.get(0);
             Individual bestSoFarIndividual = individuals.get((int)individualIndex.get(1));
             setBestFitness((double)individualIndex.get(0));
-            BufferedImage phenotypeImage = fitness.getPicture(bestSoFarIndividual.getDNA());
+            BufferedImage phenotypeImage = phenotype.createPhenotype(bestSoFarIndividual.getDNA());
             ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
         }
         List<Individual> newPopulation = new ArrayList<>();

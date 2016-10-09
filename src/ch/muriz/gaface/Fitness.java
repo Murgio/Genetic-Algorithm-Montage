@@ -45,12 +45,8 @@ public class Fitness {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        long end= System.currentTimeMillis();
+        long end = System.currentTimeMillis();
         System.out.println("FitnessConstructor: "+ (end-start)/1000f);
-    }
-
-    public BufferedImage getPicture(List<Integer> DNA) throws IOException {
-        return phenotypeObject.createPhenotype(DNA);
     }
 
     /*
@@ -67,14 +63,16 @@ public class Fitness {
      * Calculates the difference between two images
      * Uses root mean squared analysis
      * If specified, mask is used for the histogram
-     * TODO Take the parameter mask and calculate the histogram with only the mask
      */
     private double simpleImageSimilarity(BufferedImage image, BufferedImage match, BufferedImage mask) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
+
         // Create histogram with a mask if image is RGBA
-        //BufferedImage maskWithAlpha = ImageIO.read(new File("mask.png"));
+        if(mask != null) {
+            // TODO Take the parameter mask and calculate the histogram with the mask
+        }
         int[] histogram = Utils.imageHistogram(difference);
         long sumSquaredValues = 0;
         long square;
@@ -92,19 +90,21 @@ public class Fitness {
      */
     private double calculateImageSimilarity(BufferedImage image, BufferedImage match) throws IOException {
         double similarity = simpleImageSimilarity(image, match, null);
-        BufferedImage maskedImage = new BufferedImage(blackWhiteMask.getWidth(),
-                blackWhiteMask.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D maskedGraphics = maskedImage.createGraphics();
-        maskedGraphics.setBackground(Color.WHITE);
-        maskedGraphics.clearRect(0, 0, maskedImage.getWidth(), maskedImage.getHeight());
-        maskedGraphics.dispose();
-        BufferedImage importantMaskRGB = maskedImage;
-        maskedImage = Utils.applyGrayscaleMaskToAlpha(image, blackWhiteMask);
-        Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
-        importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
-        importantMaskRGBGraphics.dispose();
-        similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, blackWhiteMask) * importantAreasScale;
-
+        blackWhiteMask = null;
+        if(blackWhiteMask != null) {
+            BufferedImage maskedImage = new BufferedImage(blackWhiteMask.getWidth(),
+                    blackWhiteMask.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D maskedGraphics = maskedImage.createGraphics();
+            maskedGraphics.setBackground(Color.WHITE);
+            maskedGraphics.clearRect(0, 0, maskedImage.getWidth(), maskedImage.getHeight());
+            maskedGraphics.dispose();
+            BufferedImage importantMaskRGB = maskedImage;
+            maskedImage = Utils.applyGrayscaleMaskToAlpha(image, blackWhiteMask);
+            Graphics2D importantMaskRGBGraphics = importantMaskRGB.createGraphics();
+            importantMaskRGBGraphics.drawImage(mask, 0, 0, null);
+            importantMaskRGBGraphics.dispose();
+            similarity += simpleImageSimilarity(maskedImage, importantMaskRGB, blackWhiteMask) * importantAreasScale;
+        }
         return similarity;
     }
 

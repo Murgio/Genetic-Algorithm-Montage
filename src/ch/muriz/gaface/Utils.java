@@ -55,7 +55,7 @@ public final class Utils {
     // TODO Change setRGB and getRGB, it is now too slow :(
     // @see http://stackoverflow.com/questions/8218072/faster-way-to-extract-histogram-from-an-image
     public static BufferedImage imageAbsoluteDifference(BufferedImage img1, BufferedImage img2) {
-        BufferedImage result = new BufferedImage(img1.getWidth(), img1.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage result = new BufferedImage(img1.getWidth(), img1.getHeight(), BufferedImage.TYPE_INT_RGB);
         int width1 = img1.getWidth();
         int width2 = img2.getWidth();
         int height1 = img1.getHeight();
