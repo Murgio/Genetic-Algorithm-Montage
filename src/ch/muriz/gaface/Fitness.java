@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -41,13 +40,17 @@ public class Fitness {
             mask = ImageIO.read(new File("mask.png"));
             blackWhiteMask = createBlackWhiteMask();
 
-            similarityMin = calculateImageSimilarity(imageUtils.createNegativeImage(source), source);
-            similarityMax = calculateImageSimilarity(blurFilter.filter(source, null), source);
+            BufferedImage negativImage = imageUtils.createNegativeImage(source);
+            BufferedImage blurImage = blurFilter.filter(source, null);
+            similarityMin = calculateImageSimilarity(negativImage, source);
+            similarityMax = calculateImageSimilarity(blurImage, source);
+            System.out.println("SIM_MIN: "+similarityMin + " " + "SIM_MAX: " +similarityMax);
         } catch(IOException e) {
             e.printStackTrace();
         }
         long end = System.currentTimeMillis();
         System.out.println("FitnessConstructor: "+ (end-start)/1000f);
+        System.exit(0);
     }
 
     /*
@@ -66,8 +69,7 @@ public class Fitness {
      * If specified, mask is used for the histogram
      */
     private double simpleImageSimilarity(BufferedImage image, BufferedImage match, BufferedImage mask) {
-        int w = image.getWidth();
-        int h = image.getHeight();
+        int dimension = image.getWidth() * image.getHeight();
         BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
 
         // Create histogram with a mask if image is RGBA
@@ -75,11 +77,12 @@ public class Fitness {
             // TODO Take the parameter mask and calculate the histogram with the mask
         }
         int[] histogram = Utils.imageHistogram(difference);
-        double ms = 0;
-        for (int i = 0; i < histogram.length; i++)
-            ms += histogram[i] * histogram[i];
-        ms = Math.sqrt(ms / histogram.length);
-        return 1 / ms;
+        double sumSquaredValues = 0;
+        for(int n = 0; n < histogram.length; n++) {
+            sumSquaredValues += (n*n) * histogram[n];
+        }
+        double rms = Math.sqrt(sumSquaredValues / dimension);
+        return 1 / rms;
     }
 
     /*
