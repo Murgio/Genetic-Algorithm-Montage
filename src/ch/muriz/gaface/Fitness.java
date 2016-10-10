@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -74,13 +75,11 @@ public class Fitness {
             // TODO Take the parameter mask and calculate the histogram with the mask
         }
         int[] histogram = Utils.imageHistogram(difference);
-        long sumSquaredValues = 0;
-        long square;
-        for(long n : histogram) {
-            square = n*n;
-            sumSquaredValues += square;
-        }
-        return 1/ (Math.sqrt(sumSquaredValues / (w*h)));
+        double ms = 0;
+        for (int i = 0; i < histogram.length; i++)
+            ms += histogram[i] * histogram[i];
+        ms = Math.sqrt(ms / histogram.length);
+        return 1 / ms;
     }
 
     /*

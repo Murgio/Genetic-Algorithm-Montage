@@ -97,7 +97,6 @@ public final class Utils {
         int[] rhistogram = new int[256];
         int[] ghistogram = new int[256];
         int[] bhistogram = new int[256];
-        int[] result = new int[256];
 
         for(int i=0; i<rhistogram.length; i++) rhistogram[i] = 0;
         for(int i=0; i<ghistogram.length; i++) ghistogram[i] = 0;
@@ -114,8 +113,22 @@ public final class Utils {
                 rhistogram[red]++; ghistogram[green]++; bhistogram[blue]++;
             }
         }
-        for(int n = 0; n < 256; n++) {
-            result[n] = rhistogram[n] + ghistogram[n] + bhistogram[n];
+        return joinArray(rhistogram, ghistogram, bhistogram);
+    }
+
+    /*
+     * This method merges any number of arrays of any count.
+     */
+    private static int[] joinArray(int[]... arrays) {
+        int length = 0;
+        for (int[] array : arrays) {
+            length += array.length;
+        }
+        final int[] result = new int[length];
+        int offset = 0;
+        for (int[] array : arrays) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
         }
         return result;
     }
