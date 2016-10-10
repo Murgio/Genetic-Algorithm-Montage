@@ -41,8 +41,8 @@ public class Fitness {
             blackWhiteMask = createBlackWhiteMask();
 
             BufferedImage negativImage = imageUtils.createNegativeImage(source);
-            BufferedImage blurImage = blurFilter.filter(source, null);
             similarityMin = calculateImageSimilarity(negativImage, source);
+            BufferedImage blurImage = blurFilter.filter(source, null);
             similarityMax = calculateImageSimilarity(blurImage, source);
             System.out.println("SIM_MIN: "+similarityMin + " " + "SIM_MAX: " +similarityMax);
         } catch(IOException e) {
@@ -69,7 +69,7 @@ public class Fitness {
      * If specified, mask is used for the histogram
      */
     private double simpleImageSimilarity(BufferedImage image, BufferedImage match, BufferedImage mask) {
-        int dimension = image.getWidth() * image.getHeight();
+        final int dimension = image.getWidth() * image.getHeight();
         BufferedImage difference = Utils.imageAbsoluteDifference(image, match);
 
         // Create histogram with a mask if image is RGBA
@@ -78,8 +78,10 @@ public class Fitness {
         }
         int[] histogram = Utils.imageHistogram(difference);
         double sumSquaredValues = 0;
-        for(int n = 0; n < histogram.length; n++)
-            sumSquaredValues += (n*n) * histogram[n];
+        for(int n = 0; n < histogram.length; n++) {
+            double square = n*n;
+            sumSquaredValues += (square) * histogram[n];
+        }
         double rms = Math.sqrt(sumSquaredValues / dimension);
         return (1 / rms);
     }
