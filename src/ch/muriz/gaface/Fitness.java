@@ -78,11 +78,10 @@ public class Fitness {
         }
         int[] histogram = Utils.imageHistogram(difference);
         double sumSquaredValues = 0;
-        for(int n = 0; n < histogram.length; n++) {
+        for(int n = 0; n < histogram.length; n++)
             sumSquaredValues += (n*n) * histogram[n];
-        }
         double rms = Math.sqrt(sumSquaredValues / dimension);
-        return 1 / rms;
+        return (1 / rms);
     }
 
     /*

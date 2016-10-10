@@ -140,6 +140,7 @@ public final class Utils {
      * Like the other methods, it assumes both images have the same dimensions.
      */
     public static BufferedImage applyGrayscaleMaskToAlpha(BufferedImage image, BufferedImage mask) {
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -151,12 +152,13 @@ public final class Utils {
             int alpha = maskPixels[i] << 24; // Shift blue to alpha
             imagePixels[i] = color | alpha;
         }
-        image.setRGB(0, 0, width, height, imagePixels, 0, width);
-        return image;
+        result.setRGB(0, 0, width, height, imagePixels, 0, width);
+        return result;
     }
 
     /*
      * Rotates an image
+     * TODO Return image in original aspect ratio
      */
     public static BufferedImage rotateImage(BufferedImage img, double angle) {
         double sin = Math.abs(Math.sin(Math.toRadians(angle))), cos = Math
