@@ -1,6 +1,8 @@
 package ch.muriz.gaface;
 
 import java.awt.*;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public final class Utils {
         return parts;
     }
 
+    // TODO Return image in original aspect ratio
     public static BufferedImage resize(BufferedImage img, int newW, int newH) {
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
         BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
@@ -62,7 +65,6 @@ public final class Utils {
         int height2 = img2.getHeight();
         if ((width1 != width2) || (height1 != height2)) {
             System.err.println("Error: Images dimensions are not same");
-            System.exit(1);
         }
         for (int y = 0; y < height1; y++) {
             for (int x = 0; x < width1; x++) {
@@ -158,7 +160,6 @@ public final class Utils {
 
     /*
      * Rotates an image
-     * TODO Return image in original aspect ratio
      */
     public static BufferedImage rotateImage(BufferedImage img, double angle) {
         double sin = Math.abs(Math.sin(Math.toRadians(angle))), cos = Math
@@ -189,6 +190,13 @@ public final class Utils {
         g.dispose();
         // Return the image
         return target;
+    }
+
+    public static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(bi.getRaster().createCompatibleWritableRaster());
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 }
 
