@@ -30,7 +30,6 @@ public class Fitness {
      * Create image to match fitness against; get max/min fitness values
      */
     public Fitness() {
-        long start = System.currentTimeMillis();
         phenotypeObject = new Phenotype();
         imageUtils = new ImageUtils();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
@@ -44,13 +43,9 @@ public class Fitness {
             similarityMin = calculateImageSimilarity(negativImage, source);
             BufferedImage blurImage = blurFilter.filter(source, null);
             similarityMax = calculateImageSimilarity(blurImage, source);
-            System.out.println("SIM_MIN: "+similarityMin + " " + "SIM_MAX: " +similarityMax);
         } catch(IOException e) {
             e.printStackTrace();
         }
-        long end = System.currentTimeMillis();
-        System.out.println("FitnessConstructor: "+ (end-start)/1000f);
-        System.exit(0);
     }
 
     /*
@@ -118,12 +113,12 @@ public class Fitness {
     public BufferedImage createBlackWhiteMask() throws IOException {
         BufferedImage alphaChannel = new BufferedImage(mask.getWidth(), mask.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
         for (int x = 0; x < alphaChannel.getWidth(); x++) for (int y = 0; y < alphaChannel.getHeight(); y++) {
-                // blue = pix & 0xFF; green = (pix>>8) & 0xFF; red = (pix>>16) & 0xFF; alpha = (pix>>24) & 0xFF;
-                int alpha = (mask.getRGB(x, y) >> 24) & 0xff;
-                // Every transparent pixel is now black
-                if (alpha == 0) alphaChannel.setRGB(x, y, Color.black.getRGB());
+            // blue = pix & 0xFF; green = (pix>>8) & 0xFF; red = (pix>>16) & 0xFF; alpha = (pix>>24) & 0xFF;
+            int alpha = (mask.getRGB(x, y) >> 24) & 0xff;
+            // Every transparent pixel is now black
+            if (alpha == 0) alphaChannel.setRGB(x, y, Color.black.getRGB());
                 // Every ohter pixel is now white
-                else alphaChannel.setRGB(x, y, Color.white.getRGB());
+            else alphaChannel.setRGB(x, y, Color.white.getRGB());
         }
         return alphaChannel;
     }

@@ -73,7 +73,7 @@ public class Population //implements Runnable
         if(individuals.size() != 0)
             for(Individual indiv : individuals)
                 newDNAList.add(indiv.getDNA());
-        else System.out.println("There are no individuals");
+        else System.err.println("There are no individuals");
 
         return newDNAList;
     }
@@ -86,13 +86,10 @@ public class Population //implements Runnable
         List<List<Integer>> DNAList = getDNAList();
         // Holds all the fitnesses from every individual in the current population
         List<Double> fitnessList = new ArrayList<>();
-        //long startTime = System.currentTimeMillis();
         for(List<Integer> list : DNAList) {
             // TODO Very slow, let's fix this
             fitnessList.add(fitness.calculateFitness(list));
         }
-        //long endTime = System.currentTimeMillis();
-        //System.out.println("TIME: " + ((endTime-startTime)/1000f) + " seconds");
         List<List<Number>> individualFitness = new ArrayList<>();
         // Helps us to create a list in form: [(fitness, 0), (fitness, 1), ...]
         List<Number> mergedList = new ArrayList<>();
@@ -123,10 +120,9 @@ public class Population //implements Runnable
             List<List<Integer>> matingDNA = new ArrayList<>();
             List<Number> matingPair = tournamentSelection(individualFitness);
             for(Number individualNumber : matingPair) {
-                List<Integer> indiv = getDNAList().get((int)individualNumber);
+                List<Integer> indiv = DNAList.get((int)individualNumber);
                 matingDNA.add(indiv);
             }
-
             //Crossover the mating pair's DNA so many times according to crossover rate
             int crossovers = 0;
             if(populationCrossoverRate > 1.0f) {
@@ -158,7 +154,7 @@ public class Population //implements Runnable
                 newPopulation.add(newIndiv);
             }
         }
-        individuals = newPopulation;
+        individuals = new ArrayList<Individual>(newPopulation);
     }
 
     public List<List<Integer>> getSpecificDNAList(int index) {
