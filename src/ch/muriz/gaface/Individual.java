@@ -11,11 +11,11 @@ public class Individual {
 
     // Number of images
     private final int DNALength = 1250; // INDIVIDUAL_GENE_LENGTH * individualGenes;
-    private List<Integer> mDNA = new ArrayList<>();
+    private List<Integer> mDNA;
 
     public Individual(List<Integer> DNA) {
         if(DNA == null) mDNA = createDNA();
-        else mDNA = DNA;
+        else mDNA = new ArrayList<>(DNA);
     }
 
     private List<Integer> createDNA() {

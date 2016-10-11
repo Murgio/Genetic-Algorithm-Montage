@@ -116,9 +116,10 @@ public class Population //implements Runnable
             ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
         }
         List<Individual> newPopulation = new ArrayList<>();
-        for(int i = 0; i < (populationSize /2); i++) {
-            List<List<Integer>> matingDNA = new ArrayList<>();
-            List<Number> matingPair = tournamentSelection(individualFitness);
+        List<Number> matingPair;
+        List<List<Integer>> matingDNA = new ArrayList<>();
+        for(int i = 0; i < (populationSize/2); i++) {
+            matingPair = tournamentSelection(individualFitness);
             for(Number individualNumber : matingPair) {
                 List<Integer> indiv = DNAList.get((int)individualNumber);
                 matingDNA.add(indiv);
@@ -144,8 +145,8 @@ public class Population //implements Runnable
                         mutations++;
                     }
                 }
-                if(Math.random() <= populationMutationRate -mutations) {
-                    matingDNA.set(n, matingDNA.get(n));
+                if(Math.random() <= populationMutationRate - mutations) {
+                    matingDNA.set(n, mutate(matingDNA.get(n)));
                 }
             }
             // Add a new individual based on the newly mutated/crossed over DNA to the population
@@ -170,16 +171,17 @@ public class Population //implements Runnable
      * Uses tournament selection
      */
     private List<Number> tournamentSelection(List<List<Number>> individualFitness) {
-        int tournamentSize = (int)Math.ceil(individualFitness.size() * tournamentFraction);
+        List<List<Number>> newIndividualFitness = new ArrayList<>(individualFitness);
+        int tournamentSize = (int)Math.ceil(newIndividualFitness.size() * tournamentFraction);
         if(tournamentSize == 1) tournamentSize = 2;
 
         // Create tournament
-        int listCount = individualFitness.size();
+        int listCount = newIndividualFitness.size();
         List<List<Number>> tournament = new ArrayList<>();
         while(tournament.size() < tournamentSize) {
             int chosenIndividual = rand.nextInt(listCount);
-            if(!tournament.contains(individualFitness.get(chosenIndividual))) {
-                tournament.add(individualFitness.get(chosenIndividual));
+            if(!tournament.contains(newIndividualFitness.get(chosenIndividual))) {
+                tournament.add(newIndividualFitness.get(chosenIndividual));
             }
         }
         // Return two most fit individuals from tournament
@@ -223,10 +225,11 @@ public class Population //implements Runnable
      * Randomly mutates a piece of DNA
      */
     private List<Integer> mutate(List<Integer> DNA) {
-        int chosenBaseIndex = rand.nextInt(DNA.size());
+        List<Integer> mutateDNA = new ArrayList<>(DNA);
+        int chosenBaseIndex = rand.nextInt(mutateDNA.size());
         int chosenBaseValue = Utils.getRandomInt(Individual.INDIVIDUAL_BASE_TYPES);
-        DNA.set(chosenBaseIndex, chosenBaseValue);
-        return DNA;
+        mutateDNA.set(chosenBaseIndex, chosenBaseValue);
+        return mutateDNA;
     }
 
     public int getPopulationSize() {return this.populationSize;}
