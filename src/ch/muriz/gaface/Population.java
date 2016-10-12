@@ -105,13 +105,12 @@ public class Population //implements Runnable
             }
         });
         Collections.reverse(individualFitness);
+        setBestFitness((double)individualFitness.get(0).get(0));
 
         // If requested, give a status update with the most fit individual from the old population
         // Also save the DNA for all individuals in the last population, and possible best generation
         if(save) {
-            List<Number> individualIndex = individualFitness.get(0);
-            Individual bestSoFarIndividual = individuals.get((int)individualIndex.get(1));
-            setBestFitness((double)individualIndex.get(0));
+            Individual bestSoFarIndividual = individuals.get((int)individualFitness.get(0).get(1));
             BufferedImage phenotypeImage = phenotype.createPhenotype(bestSoFarIndividual.getDNA());
             ImageIO.write(phenotypeImage, "png", new File(statusDirection + "/" + populationNumber + ".png"));
         }

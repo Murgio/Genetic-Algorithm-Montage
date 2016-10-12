@@ -100,19 +100,19 @@ public final class Utils {
         int[] ghistogram = new int[256];
         int[] bhistogram = new int[256];
 
-        for(int i=0; i<rhistogram.length; i++) rhistogram[i] = 0;
-        for(int i=0; i<ghistogram.length; i++) ghistogram[i] = 0;
-        for(int i=0; i<bhistogram.length; i++) bhistogram[i] = 0;
+        for(int i=0; i<rhistogram.length; i++)
+            rhistogram[i] = ghistogram[i] = bhistogram[i] = 0;
 
         for(int i=0; i<input.getWidth(); i++) {
             for(int j=0; j<input.getHeight(); j++) {
+                int rgb = input.getRGB(i, j);
 
-                int red = new Color(input.getRGB (i, j)).getRed();
-                int green = new Color(input.getRGB (i, j)).getGreen();
-                int blue = new Color(input.getRGB (i, j)).getBlue();
+                int r = (rgb >> 16) & 0xFF;
+                int g = (rgb >>  8) & 0xFF;
+                int b = (rgb      ) & 0xFF;
 
                 // Increase the values of colors
-                rhistogram[red]++; ghistogram[green]++; bhistogram[blue]++;
+                rhistogram[r]++; ghistogram[g]++; bhistogram[b]++;
             }
         }
         return joinArray(rhistogram, ghistogram, bhistogram);
