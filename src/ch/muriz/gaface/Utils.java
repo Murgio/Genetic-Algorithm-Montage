@@ -103,8 +103,8 @@ public final class Utils {
         for(int i=0; i<rhistogram.length; i++)
             rhistogram[i] = ghistogram[i] = bhistogram[i] = 0;
 
-        for(int i=0; i<input.getWidth(); i++) {
-            for(int j=0; j<input.getHeight(); j++) {
+        for(int j=0; j<input.getHeight(); j++) {
+            for(int i=0; i<input.getWidth(); i++) {
                 int rgb = input.getRGB(i, j);
 
                 int r = (rgb >> 16) & 0xFF;
