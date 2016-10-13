@@ -1,4 +1,4 @@
-<p align="center"><img alt="logo" src="http://i.imgur.com/vOdqNR7.gif"></p>
+<p align="center"><img alt="logo" src="images/thisgiftookmelongerthanexpected.gif"></p>
 
 [![Build Status](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage.svg?branch=master)](https://travis-ci.org//Murgio/Genetic-Algorithm-Montage)
 [![Code Health](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master/landscape.svg?style=flat)](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master)
