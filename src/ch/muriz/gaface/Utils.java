@@ -38,21 +38,31 @@ public final class Utils {
         return parts;
     }
 
-    // TODO Return image in original aspect ratio
-    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
-        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+    /**
+     * Resizes an image using a Graphics2D object backed by a BufferedImage.
+     * @param src - source image to scale
+     * @param w - desired width
+     * @param h - desired height
+     * @return - the new resized image
+     */
+    public static BufferedImage getScaledImage(BufferedImage src, int w, int h) {
+        int finalw = w;
+        int finalh = h;
+        double factor = 1.0d;
+        if(src.getWidth() > src.getHeight()){
+            factor = ((double)src.getHeight()/(double)src.getWidth());
+            finalh = (int)(finalw * factor);
+        }else{
+            factor = ((double)src.getWidth()/(double)src.getHeight());
+            finalw = (int)(finalh * factor);
+        }
 
-        Graphics2D g2d = dimg.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
-
-        return dimg;
-    }
-
-    public static boolean isAlpha(BufferedImage image, int x, int y) {
-        Color pixel = new Color(image.getRGB(x, y), true);
-        return pixel.getAlpha() > 0;
+        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
+        Graphics2D g = resizedImg.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(src, 0, 0, finalw, finalh, null);
+        g.dispose();
+        return resizedImg;
     }
 
     // TODO Change setRGB and getRGB, it is now too slow :(
@@ -156,6 +166,32 @@ public final class Utils {
         }
         result.setRGB(0, 0, width, height, imagePixels, 0, width);
         return result;
+    }
+
+    /*
+     * Converts the source image into negative
+     */
+    public static BufferedImage createNegativeImage(BufferedImage original) {
+        BufferedImage negativImage = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
+        //get image width and height
+        int width = original.getWidth();
+        int height = original.getHeight();
+        //convert to negative
+        for(int y = 0; y < height; y++) for(int x = 0; x < width; x++) {
+            int p = original.getRGB(x,y);
+            int a = (p>>24)&0xff;
+            int r = (p>>16)&0xff;
+            int g = (p>>8)&0xff;
+            int b = p&0xff;
+            //subtract RGB from 255
+            r = 255 - r;
+            g = 255 - g;
+            b = 255 - b;
+            //set new RGB value
+            p = (a<<24) | (r<<16) | (g<<8) | b;
+            negativImage.setRGB(x, y, p);
+        }
+        return negativImage;
     }
 
     /*

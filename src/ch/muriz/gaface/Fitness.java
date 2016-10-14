@@ -16,30 +16,36 @@ import javax.imageio.ImageIO;
 public class Fitness {
 
     private Phenotype phenotypeObject;
-    private ImageUtils imageUtils;
     // How much more they add to fitness compared to other areas
     private final int importantAreasScale = 3;
     private double similarityMin;
     private double similarityMax;
-    private BufferedImage source;
-    private BufferedImage blackWhiteMask;
     // Sections of image more important than others
     private BufferedImage mask;
+
+    private BufferedImage blackWhiteMask;
+
+    // Image the individuals are matched against
+    private BufferedImage source;
+    private final String matchFile = "match.png";
 
     /*
      * Create image to match fitness against; get max/min fitness values
      */
     public Fitness() {
         phenotypeObject = new Phenotype();
-        imageUtils = new ImageUtils();
         BoxBlurFilter blurFilter = new BoxBlurFilter();
         blurFilter.setHRadius(2); blurFilter.setRadius(2); blurFilter.setIterations(1);
         try {
-            source = imageUtils.getSource();
+            source = ImageIO.read(new File(matchFile));
+            BufferedImage convertedImg = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
+            convertedImg.getGraphics().drawImage(source, 0, 0, null);
+            convertedImg.getGraphics().dispose();
+            source = convertedImg;
             mask = ImageIO.read(new File("mask.png"));
             blackWhiteMask = createBlackWhiteMask();
 
-            BufferedImage negativImage = imageUtils.createNegativeImage(source);
+            BufferedImage negativImage = Utils.createNegativeImage(source);
             similarityMin = calculateImageSimilarity(negativImage, source);
             BufferedImage blurImage = blurFilter.filter(source, null);
             similarityMax = calculateImageSimilarity(blurImage, source);

@@ -60,7 +60,7 @@ public class Phenotype {
             float scale = n/100.0f;
             scale = (scale * (individualMaxScale - individualMinScale))
                     + individualMinScale;
-            BufferedImage instance = Utils.resize(alphaSource, Math.round((alphaSource.getWidth()) * scale),
+            BufferedImage instance = Utils.getScaledImage(alphaSource, Math.round((alphaSource.getWidth()) * scale),
                     Math.round((alphaSource.getWidth()) * scale));
             alphaSourceSizes.add(instance);
         }
