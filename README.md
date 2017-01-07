@@ -21,7 +21,7 @@ Input Face             |   After nearly 100'000 generations
 1. Create a folder on your desktop, name it *face_test*
 2. Name your input image *match.png*
 3. Run **FaceGen.java**
-4. Get a :coffee: and wait...
+4. Get :coffee::coffee: and wait...
 
 ### Show some :heart:
 [![Twitter Follow](https://img.shields.io/twitter/follow/MurgioMurmani.svg?style=social)](https://twitter.com/murgiomurmani)
