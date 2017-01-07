@@ -17,6 +17,12 @@ Input Face             |   After nearly 100'000 generations
 
 <p align="center"><img alt="will_gif" src="images/will_genetic.gif" width="260"></p>
 
+## How To Get Started
+1. Create a folder on your desktop, name it *face_test*
+2. Name your input image *match.png*
+3. Run **FaceGen.java**
+4. Get a :coffee: and wait...
+
 ### Show some :heart:
 [![Twitter Follow](https://img.shields.io/twitter/follow/MurgioMurmani.svg?style=social)](https://twitter.com/murgiomurmani)
 [![GitHub stars](https://img.shields.io/github/stars/Murgio/Genetic-Algorithm-Montage.svg?style=social&label=Star)](https://github.com/Murgio/Genetic-Algorithm-Montage)
