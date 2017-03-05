@@ -13,6 +13,13 @@ Input Face             |   After nearly 100'000 generations
 :-------------------------:|:-------------------------:
 <img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/will.jpg" width="130">  |  <img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/96600%20gens.jpg" width="130">
 <img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/rowan.png" width="150"> | <img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/106000%20gens.png" width="150">
+<img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/mkbhd.png" width="120"> | <img src="https://raw.githubusercontent.com/Murgio/Genetic-Algorithm-Montage/master/images/120200%20gens.png" width="120">
+
+Will Smith: **96'600** Generations, Fitness Score: **85.8635%**
+
+Rowan Atkinson: **106'000** Generations, Fitness Score: **89.3649%**
+
+Marques Brownlee: **120'200** Generations, Fitness Score: **90.3493%**
 
 ## Procedure
 
