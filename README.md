@@ -1,6 +1,6 @@
 <p align="center"><img alt="logo" src="images/thisgiftookmelongerthanexpected.gif"></p>
 
-[![Build Status](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage.svg?branch=master)](https://travis-ci.org//Murgio/Genetic-Algorithm-Montage)
+[![Build Status](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage.svg?branch=master)](https://travis-ci.org/Murgio/Genetic-Algorithm-Montage)
 [![Code Health](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master/landscape.svg?style=flat)](https://landscape.io/github/Murgio/Genetic-Algorithm-Montage/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/78889379dbe94fdf8a9c44746e13bd6b)](https://www.codacy.com/app/muriz-se/Genetic-Algorithm-Montage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Murgio/Genetic-Algorithm-Montage&amp;utm_campaign=Badge_Grade)
 [![GitHub issues](https://img.shields.io/github/issues/Murgio/Genetic-Algorithm-Montage.svg)](https://github.com/Murgio/Genetic-Algorithm-Montage/issues)
