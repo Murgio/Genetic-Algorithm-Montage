@@ -4,7 +4,7 @@
 
 <div align="center">
   <img src="images/mona.png" width="200px"/>
-  <img src="images/120000 gens.png" width="200px"/>
+  <img src="images/120000 gens.jpg" width="200px"/>
   <p>Mona Lisa after 120'000 generations approximated with 260 individuals.</p>
 </div>
 
@@ -44,12 +44,12 @@ In order to perform the selection of the individuals in the GA a fitness value n
 
 Input Face             |   ~100'000 generations | Fitness Score
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src="images/mona.png" width="130"> |  <img src="images/120000 gens.png" width="130"> | Mona Lisa: **93.071%**
-<img src="images/girl.png" width="140"> | <img src="images/74000%20gens.png" width="140"> | Girl with a Pearl Earring: **84.095%**
+<img src="images/mona.png" width="130"> |  <img src="images/120000 gens.jpg" width="130"> | Mona Lisa: **93.071%**
+<img src="images/girl.png" width="140"> | <img src="images/74000%20gens.jpg" width="140"> | Girl with a Pearl Earring: **84.095%**
 <img src="images/will.jpg" width="139"> |  <img src="images/96600%20gens.jpg" width="139"> | Will Smith: **85.863%**
-<img src="images/elon.png" width="140"> | <img src="images/35000%20gens.png" width="140"> | Elon Musk: **81.632%**
-<img src="images/rowan.png" width="150"> | <img src="images/106000%20gens.png" width="150"> | Rowan Atkinson: **89.364%**
-<img src="images/mkbhd.png" width="120"> | <img src="images/120200%20gens.png" width="120"> | Marques Brownlee: **90.349%**
+<img src="images/elon.jpg" width="140"> | <img src="images/35000%20gens.jpg" width="140"> | Elon Musk: **81.632%**
+<img src="images/rowan.jpg" width="150"> | <img src="images/106000%20gens.jpg" width="150"> | Rowan Atkinson: **89.364%**
+<img src="images/mkbhd.png" width="120"> | <img src="images/120200%20gens.jpg" width="120"> | Marques Brownlee: **90.349%**
 
 
 ## Misc
